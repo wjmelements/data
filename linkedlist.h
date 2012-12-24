@@ -1,21 +1,13 @@
 #ifndef linkedlist_w
 #define linkedlist_w
 
+#include "linkedlistnode.h"
 #include <cstddef>
 using std::size_t;
 template <typename T>
 class linkedlist
 {
 private:
-	template <typename E> class linkedlistnode
-	{
-	private:
-		E data;
-		linkedlistnode<E> prev;
-		linkedlistnode<E> next;
-	public:
-		linkedlistnode(E data);
-	};
 	size_t count;
 	linkedlistnode<T> first;
 	linkedlistnode<T> last;
