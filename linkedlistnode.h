@@ -10,7 +10,7 @@ template<typename E> class linkedlist;
 template<typename E> class linkedlistnode
 {
 private:
-	E* data;
+	E data;
 	linkedlistnode<E>* prev;
 	linkedlistnode<E>* next;
 public:
@@ -21,13 +21,13 @@ public:
 
 template<typename E> linkedlistnode<E>::linkedlistnode(E data,linkedlistnode<E>* next)
 {
-	this->data = &data;
+	this->data = data;
 	this->next = next;
 	this->prev = NULL;
 }
 template<typename E> linkedlistnode<E>::linkedlistnode(linkedlistnode<E>* prev,E data,linkedlistnode<E>* next)
 {
-	this->data = &data;
+	this->data = data;
 	this->next = next;
 	this->prev = prev;
 }

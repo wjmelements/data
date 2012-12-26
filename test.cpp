@@ -5,7 +5,8 @@ using namespace std;
 int main() {
 	int six = 6;
 	linkedlist<linkedlist<int> > temp;
-	linkedlist<int> sicks(6);
+	linkedlist<int> sicks(six);
+	cout << sicks.at(0) << '\n';
 	int size = 26;
 	char* alphabet = new char[size];
 	linkedlist<char> alpha2;
@@ -13,7 +14,12 @@ int main() {
 	{
 		alphabet[letter] = 'a' + letter;
 		alpha2.push_back(alphabet[letter]);
-		cout << alphabet[letter];
+		cout << "Adding: " << alphabet[letter] << endl;
+		for (size_t i = 0; i < letter; i++)
+		{
+			cout << alpha2.at(i);
+		}
+		cout << endl;
 	}
 	linkedlist<char> alpha(alphabet,size);
 	cout << '\n';
