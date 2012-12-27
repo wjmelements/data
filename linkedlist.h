@@ -11,9 +11,9 @@ private:
 	linkedlistnode<T>* first;
 	linkedlistnode<T>* last;
 public:
-	linkedlist();
-	linkedlist(T first);
-	linkedlist(T* elements, size_t size);
+	linkedlist(); // O(1)
+	linkedlist(T first); // O(1)
+	linkedlist(T* elements, size_t size); // O(n)
 	size_t size(); // O(1)
 	T at(size_t index); // O(n)
 	void push_back(T append); // O(1)
@@ -21,6 +21,7 @@ public:
 	T pop_back(); // O(1)
 	T pop_front(); // O(1)
 	bool empty(); // O(1)
+	void clear(); // O(n)
 };
 
 template <typename T> linkedlist<T>::linkedlist()
@@ -53,6 +54,9 @@ template <typename T> linkedlist<T>::linkedlist(T* elements, size_t size)
 		this->first = NULL;
 		this->last = NULL;
 	}
+}
+template <typename T> size_t linkedlist<T>::size() {
+	return count;
 }
 template <typename T> void linkedlist<T>::push_back(T elem)
 {
@@ -99,6 +103,59 @@ template <typename T> T linkedlist<T>::at(size_t index)
 			current = current->prev;
 		}
 		return current->data;
+	}
+}
+template <typename T> T linkedlist<T>::pop_back()
+{
+	linkedlistnode<T>* popped = this->last;
+	this->last = popped->prev;
+	if (this->last == NULL)
+	{
+		this->first = NULL;
+	}
+	else
+	{
+		this->last->next = NULL;
+	}
+	count--;
+	T data = popped->data;
+	delete popped;
+	return data;
+}
+template <typename T> T linkedlist<T>::pop_front()
+{
+	linkedlistnode<T>* popped = this->first;
+	this->first = popped->next;
+	if (this->first == NULL)
+	{
+		this->last = NULL;
+	}
+	else
+	{
+		this->first->prev = NULL;
+	}
+	count--;
+	T data = popped->data;
+	delete popped;
+	return data;
+}
+template <typename T> bool linkedlist<T>::empty()
+{
+	return count == 0;
+}
+template <typename T> void linkedlist<T>::clear()
+{
+/*	while(count) {
+		this->pop_front();
+	}*/
+	if (count) {
+		while(this->first->next) {
+			this->first = this->first->next;
+			delete this->first->prev;
+		}
+		delete this->last;
+		this->first = this->last = NULL;
+		count = 0;
 	}
 }
 #endif
