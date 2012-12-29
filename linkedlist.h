@@ -4,19 +4,25 @@
 namespace data {
 	using std::size_t;
 
-	template <typename T> class linkedlistnode;
-
 	template <typename T>
 	class linkedlist {
 	private:
+		class linkedlistnode {
+		public:
+			T data;
+			linkedlistnode* next;
+			linkedlistnode* prev;
+			linkedlistnode(T data, linkedlistnode* next = NULL);
+			linkedlistnode(linkedlistnode* prev, T data, linkedlistnode* next = NULL);
+		};
 		size_t count;
-		linkedlistnode<T>* first;
-		linkedlistnode<T>* last;
+		linkedlistnode* first;
+		linkedlistnode* last;
 	public:
 		linkedlist(); // O(1)
 		linkedlist(T first); // O(1)
 		linkedlist(T* elements, size_t size); // O(n)
-		linkedlist(const linkedlistnode<T> &original); // not implemented
+		linkedlist(const linkedlist<T> &original); // not implemented
 		linkedlist<T>& operator= (const linkedlist<T> &original); // not implemented
 		size_t size(); // O(1)
 		T at(size_t index); // O(n)
@@ -29,8 +35,8 @@ namespace data {
 		class iterator {
 		private:
 			bool forwards;
-			linkedlistnode<T>* current;
-			iterator(bool forwards, linkedlistnode<T>* current); // O(1)
+			linkedlistnode* current;
+			iterator(bool forwards, linkedlistnode* current); // O(1)
 		public:
 			iterator(); // O(1)
 		};
@@ -43,22 +49,12 @@ namespace data {
 	#define NULL 0
 	#endif
 
-	template<typename E> class linkedlistnode {
-	private:
-		E data;
-		linkedlistnode<E>* prev;
-		linkedlistnode<E>* next;
-	public:
-		linkedlistnode(E data, linkedlistnode<E>* next = NULL);
-		linkedlistnode(linkedlistnode<E>* prev, E data, linkedlistnode<E>* next = NULL);
-		friend class linkedlist<E>;
-	};
-	template<typename E> linkedlistnode<E>::linkedlistnode(E data,linkedlistnode<E>* next) {
+	template<typename E> linkedlist<E>::linkedlistnode::linkedlistnode(E data,linkedlistnode* next) {
 		this->data = data;
 		this->next = next;
 		this->prev = NULL;
 	}
-	template<typename E> linkedlistnode<E>::linkedlistnode(linkedlistnode<E>* prev,E data,linkedlistnode<E>* next) {
+	template<typename E> linkedlist<E>::linkedlistnode::linkedlistnode(linkedlistnode* prev,E data,linkedlistnode* next) {
 		this->data = data;
 		this->next = next;
 		this->prev = prev;
@@ -70,14 +66,14 @@ namespace data {
 	}
 	template <typename T> linkedlist<T>::linkedlist(T first) {
 		this->count = 1;
-		this->first = new linkedlistnode<T>(first);
+		this->first = new linkedlistnode(first);
 		this->last = this->first;
 	}
 	template <typename T> linkedlist<T>::linkedlist(T* elements, size_t size) {
 		if (size)
 		{
 			this->count = 1;
-			this->first = new linkedlistnode<T>(elements[0]);
+			this->first = new linkedlistnode(elements[0]);
 			this->last = this->first;
 			while(this->count < size)
 			{
@@ -102,7 +98,7 @@ namespace data {
 		return count;
 	}
 	template <typename T> void linkedlist<T>::push_back(T elem) {
-		linkedlistnode<T>* pushed = new linkedlistnode<T>(this->last,elem);
+		linkedlistnode* pushed = new linkedlistnode(this->last,elem);
 		if(this->count)
 		{
 			this->last = this->last->next = pushed;
@@ -114,7 +110,7 @@ namespace data {
 		this->count++;
 	}
 	template <typename T> void linkedlist<T>::push_front(T elem) {
-		linkedlistnode<T>* pushed = new linkedlistnode<T>(elem,this->first);
+		linkedlistnode* pushed = new linkedlistnode(elem,this->first);
 		if(this->count)
 		{
 			this->first = this->first->prev = pushed;
@@ -128,7 +124,7 @@ namespace data {
 	template <typename T> T linkedlist<T>::at(size_t index) {
 		if (index < this->count / 2 )
 		{
-			linkedlistnode<T>* current = this->first;
+			linkedlistnode* current = this->first;
 			while(index --> 0)
 			{
 				current = current->next;
@@ -137,7 +133,7 @@ namespace data {
 		}
 		else
 		{
-			linkedlistnode<T>* current = this->last;
+			linkedlistnode* current = this->last;
 			while(++index < count)
 			{
 				current = current->prev;
@@ -146,7 +142,7 @@ namespace data {
 		}
 	}
 	template <typename T> T linkedlist<T>::pop_back() {
-		linkedlistnode<T>* popped = this->last;
+		linkedlistnode* popped = this->last;
 		this->last = popped->prev;
 		if (this->last == NULL)
 		{
@@ -162,7 +158,7 @@ namespace data {
 		return data;
 	}
 	template <typename T> T linkedlist<T>::pop_front() {
-		linkedlistnode<T>* popped = this->first;
+		linkedlistnode* popped = this->first;
 		this->first = popped->next;
 		if (this->first == NULL)
 		{
@@ -195,7 +191,7 @@ namespace data {
 		forward = true;
 		current = NULL;
 	}
-	template <typename T> linkedlist<T>::iterator::iterator(bool forward, linkedlistnode<T>* current) {
+	template <typename T> linkedlist<T>::iterator::iterator(bool forward, linkedlistnode* current) {
 		this->forward = forward;
 		this->current = current;
 	}
