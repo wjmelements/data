@@ -16,6 +16,8 @@ namespace data {
 		linkedlist(); // O(1)
 		linkedlist(T first); // O(1)
 		linkedlist(T* elements, size_t size); // O(n)
+		linkedlist(const linkedlistnode<T> &original); // not implemented
+		linkedlist<T>& operator= (const linkedlist<T> &original); // not implemented
 		size_t size(); // O(1)
 		T at(size_t index); // O(n)
 		void push_back(T append); // O(1)
@@ -24,6 +26,18 @@ namespace data {
 		T pop_front(); // O(1)
 		bool empty(); // O(1)
 		void clear(); // O(n)
+		class iterator {
+		private:
+			bool forwards;
+			linkedlistnode<T>* current;
+			iterator(bool forwards, linkedlistnode<T>* current); // O(1)
+		public:
+			iterator(); // O(1)
+		};
+		iterator begin();
+		iterator end();
+		iterator rbegin();
+		iterator rend();
 	};
 	#ifndef NULL
 	#define NULL 0
@@ -76,6 +90,13 @@ namespace data {
 			this->first = NULL;
 			this->last = NULL;
 		}
+	}
+	template <typename T> linkedlist<T>::linkedlist<T>(const linkedlist<T> &original) {
+		count = original.size();
+	}
+	template <typename T> linkedlist<T>& linkedlist<T>::operator= (const linkedlist<T> &original) {
+		count  = original.size();
+		return *this;
 	}
 	template <typename T> size_t linkedlist<T>::size() {
 		return count;
@@ -169,6 +190,17 @@ namespace data {
 			this->first = this->last = NULL;
 			count = 0;
 		}
+	}
+	template <typename T> linkedlist<T>::iterator::iterator() {
+		forward = true;
+		current = NULL;
+	}
+	template <typename T> linkedlist<T>::iterator::iterator(bool forward, linkedlistnode<T>* current) {
+		this->forward = forward;
+		this->current = current;
+	}
+	template <typename T> linkedlist<T>::iterator linkedlist<T>::begin() {
+		return iterator(true,this->first);
 	}
 } // namespace data
 #endif
