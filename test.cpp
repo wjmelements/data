@@ -2,6 +2,7 @@
 #include <cstddef>
 #include <iostream>
 using namespace std;
+using data::linkedlist;
 int main() {
 	cout << "== Linked List ==\n";
 	int six = 6;
