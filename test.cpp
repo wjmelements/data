@@ -1,8 +1,10 @@
 #include "linkedlist.h" 
+#include "trie.h"
 #include <cstddef>
 #include <iostream>
 using namespace std;
 using data::linkedlist;
+using data::trie;
 int main() {
 	cout << "== Linked List ==\n";
 	int six = 6;
@@ -63,5 +65,51 @@ int main() {
 	}
 	cout << endl;
 	alpha.clear();
+	cout << "\n== Trie ==\n";
+	trie<string> dict;
+	dict.put("hello world");
+	if (dict.has("hello world")) {
+		cout << "Pass" << endl;
+	}
+	else {
+		cout << "Fail" << endl;
+	}
+	dict.remove("hello world");
+	if (dict.has("hello world")) {
+		cout << "Fail" << endl;
+	}
+	else {
+		cout << "Pass" << endl;
+	}
+	trie<long long> phbook;
+	phbook.put(12334567);
+	if (phbook.has(12334567)) {
+		cout << "Pass" << endl;
+	}
+	else {
+		cout << "Fail" << endl;
+	}
+	phbook.remove(1234567);
+	if (phbook.has(1234567)) {
+		cout << "Fail" << endl;
+	}
+	else {
+		cout << "Pass" << endl;
+	}
+	trie<char> lett;
+	lett.put('a');
+	if (lett.has('a')) {
+		cout << "Pass" << endl;
+	}
+	else {
+		cout << "Fail" << endl;
+	}
+	lett.remove('a');
+	if (lett.has('a')) {
+		cout << "Fail" << endl;
+	}
+	else {
+		cout << "Pass" << endl;
+	}
 	return 0;
 }

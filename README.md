@@ -15,6 +15,8 @@ Beta - very function but requires testing and refining
 
 linkedlist -- Beta
 
+trie -- Beta
+
 splayset
 
 splaymap
