@@ -28,6 +28,10 @@ int main() {
 		cout << alpha.at(index);
 	}
 	cout << "\n";
+	for(linkedlist<char>::iterator i = alpha.begin(); i != alpha.end(); i++) {
+		cout << *i;
+	}
+	cout << "\n";
 	for(size_t index = 0; index < size; index++)
 	{
 		cout << alpha2.at(index);
@@ -52,6 +56,10 @@ int main() {
 	cout << "\nThe following should be the above backwards:\n";
 	while(alpha2.size()) {
 		cout << alpha2.pop_back();
+	}
+	cout << endl;
+	for (linkedlist<char>::iterator it = alpha.rbegin(); it != alpha.rend(); it++) {
+		cout << *it;
 	}
 	cout << endl;
 	alpha.clear();
