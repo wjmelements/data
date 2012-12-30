@@ -9,7 +9,7 @@ datastructure -- Condition
 
 Alpha - partially functional and in development
 
-Beta - very function but requires testing and refining
+Beta - very functional but requires testing and refining
 
 == List ==
 
