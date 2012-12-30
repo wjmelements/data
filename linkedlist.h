@@ -22,8 +22,9 @@ namespace data {
 		linkedlist(); // O(1)
 		linkedlist(T first); // O(1)
 		linkedlist(T* elements, size_t size); // O(n)
-		linkedlist(const linkedlist<T> &original); // not implemented
-		linkedlist<T>& operator= (const linkedlist<T> &original); // not implemented
+		linkedlist(const linkedlist<T> &original); // O(n)
+		linkedlist<T>& operator= (const linkedlist<T> &original); //O(n)
+		~linkedlist(); // O(n)
 		size_t size(); // O(1)
 		T& front(); // O(1)
 		T& back(); // O(1)
@@ -113,6 +114,9 @@ namespace data {
 			push_back(*it);
 		}
 		return *this;
+	}
+	template <typename T> linkedlist<T>::~linkedlist() {
+		clear();
 	}
 	template <typename T> size_t linkedlist<T>::size() {
 		return count;
