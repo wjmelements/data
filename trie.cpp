@@ -49,7 +49,7 @@ namespace data {
 		}
 	}
 	template<typename T> trie<T>::trie() {
-		size_t max = 256;
+		size_t max = 16;
 		this->children = new trie<T>*[max];
 		for (size_t i = 0; i < max; ++i) {
 			this->children[i] = NULL;
@@ -71,8 +71,8 @@ namespace data {
 			termination = true;
 		}
 		else {
-			T remains = t >> 8;
-			char first = t && 255;
+			T remains = t >> 4;
+			char first = t && 15;
 			if (children[first] == NULL) {
 				children[first] = new trie<T>;
 			}
@@ -94,8 +94,8 @@ namespace data {
 			return termination;
 		}
 		else {
-			T remains = t >> 8;
-			char first = t && 255;
+			T remains = t >> 4;
+			char first = t && 15;
 			if (children[first] == NULL) {
 				return false;
 			}
@@ -117,8 +117,8 @@ namespace data {
 			termination = false;
 		}
 		else {
-			T remains = t >> 8;
-			char first = t && 255;
+			T remains = t >> 4;
+			char first = t && 15;
 			if (children[first] != NULL) {
 				children[first]->remove(remains);
 			}
