@@ -17,9 +17,9 @@ linkedlist -- Beta
 
 trie -- Beta
 
-splayset
+splayset -- Alpha
 
-splaymap
+splaymap -- Alpha
 
 rbset
 
@@ -30,4 +30,6 @@ trie
 avlset
 
 avlmap
+
+bogosearchtree
 

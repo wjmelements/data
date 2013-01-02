@@ -1,10 +1,13 @@
 #include "linkedlist.h" 
 #include "trie.h"
+#include "splay.h"
 #include <cstddef>
 #include <iostream>
 using namespace std;
 using data::linkedlist;
 using data::trie;
+using data::splayset;
+using data::splaymap;
 int main() {
 	cout << "== Linked List ==\n";
 	int six = 6;
@@ -111,5 +114,71 @@ int main() {
 	else {
 		cout << "Pass" << endl;
 	}
+	cout << "\n== Splay Set ==\n";
+	splayset<unsigned int> digits;
+	cout << "Constructed with size zero:\t";
+	if (digits.size() == 0) {
+		cout << "Pass";
+	}
+	else {
+		cout << "Fail";
+	}
+	cout << "\nAdded ten values and contains those values:\t";
+	for (unsigned int i = 0; i < 10; ++i) {
+		digits.add(i);
+	}
+	bool ssctest = true;
+	for (unsigned int i = 0; i < 10; ++i) {
+		if (!digits.contains(i)) {
+			ssctest = false;
+		}
+	}
+	if (ssctest) {
+		cout <<"Pass";
+	}
+	else {
+		cout <<"Fail";
+	}
+	cout << "\nNow has 10 values:\t";
+	if (digits.size() == 10) {
+		cout << "Pass";
+	}
+	else {
+		cout << "Fail";
+	}
+	cout << '\n';
+	cout << "\n== Splay Map ==";
+	splaymap<char,unsigned int> charstodigits;
+	cout << "\nConstructed with size zero:\t";
+	if (charstodigits.size() == 0) {
+		cout << "Pass";
+	}
+	else {
+		cout << "Fail";
+	}
+	cout << "\nAdded ten values and contains them:\t";
+	for (unsigned int i = 0; i < 10; ++i) {
+		charstodigits.put((char)48 + i,i);
+	}
+	bool smctest = true;
+	for (char i = '0'; i <= '9'; ++i) {
+		if (charstodigits.get(i) != i - 48) {
+			smctest = false;
+		}
+	}
+	if (smctest) {
+		cout << "Pass";
+	}
+	else {
+		cout << "Fail";
+	}
+	cout << "\nNow has ten values:\t";
+	if (charstodigits.size() == 10) {
+		cout << "Pass";
+	}
+	else {
+		cout << "Fail";
+	}
+	cout << "\n";
 	return 0;
 }

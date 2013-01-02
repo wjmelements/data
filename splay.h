@@ -13,6 +13,7 @@ namespace data {
 	private:
 		splaytreenode<T>* root;
 	public:
+		splayset();
 		size_t size(); // O(n)
 		bool empty(); // O(1)
 		void clear(); // O(n)
@@ -27,13 +28,16 @@ namespace data {
 		struct tuple {
 			K key;
 			V value;
+			bool operator== (tuple& other);
+			bool operator< (tuple& other);
 		};
 		splaytreenode<tuple>* root;
 	public:
+		splaymap();
 		size_t size(); // O(n)
 		bool empty(); // O(1)
 		void clear(); // O(n)
-		V put(K key); // O(log n)
+		void put(K key, V value); // O(log n)
 		V get(K key); // O(log n)
 		V remove(K key); // O(log n)
 	};
@@ -41,7 +45,6 @@ namespace data {
 	template <typename T>
 	class splaytreenode {
 	private:
-		T data;
 		splaytreenode<T>* left;
 		splaytreenode<T>* right;
 		splaytreenode<T>* up;
@@ -52,13 +55,15 @@ namespace data {
 		splaytreenode<T>* zigzigright();
 		splaytreenode<T>* zigzagleft();
 		splaytreenode<T>* zigzagright();
-	public:
-		splaytreenode(T elem); // O(1)
 		splaytreenode(splaytreenode<T>* parent, T elem);
-		size_t size();
-		bool has(); // O(log n)
-		void insert(T elem); // O(log n)
-		void remove(T elem); // O(log n)
+	public:
+		T data;
+
+		splaytreenode(T elem); // O(1)
+		size_t size(); // O(n)
+		splaytreenode<T>* find(T elem); // O(log n)
+		splaytreenode<T>* insert(T elem); // O(log n)
+		splaytreenode<T>* splay(); // O(log n)
 	};
 
 	template <typename T> splaytreenode<T>::splaytreenode(T elem) {
@@ -84,9 +89,19 @@ namespace data {
 		this->right = tosplay->left;
 		tosplay->left = this;
 		tosplay->up = this->up;
+		if (tosplay->up != NULL) {
+			if (tosplay->up->left == this) {
+				tosplay->up->left = tosplay;
+			}
+			else {
+				tosplay->up->right = tosplay;
+			}
+		}
 		this->up = tosplay;
-		this->right->up = this;
-		return this->up;
+		if (this->right != NULL) {
+			this->right->up = this;
+		}
+		return tosplay;
 
 	}
 
@@ -95,9 +110,19 @@ namespace data {
 		this->left = tosplay->right;
 		tosplay->right = this;
 		tosplay->up = this->up;
+		if (tosplay->up != NULL) {
+			if (tosplay->up->left == this) {
+				tosplay->up->left = tosplay;
+			}
+			else {
+				tosplay->up->right = tosplay;
+			}
+		}		this->up = tosplay;
 		this->up = tosplay;
-		this->left->up = this;
-		return this->up;
+		if (this->left != NULL) {
+			this->left->up = this;
+		}
+		return tosplay;
 	}
 
 	template <typename T> splaytreenode<T>* splaytreenode<T>::zigzigleft() {
@@ -114,6 +139,195 @@ namespace data {
 
 	template <typename T> splaytreenode<T>* splaytreenode<T>::zigzagright() {
 		return left->zigleft()->zigright();
+	}
+
+	template <typename T> splaytreenode<T>* splaytreenode<T>::find(T elem) {
+		if (elem < this->data) {
+			if (left) {
+				return left->find(elem);
+			}
+			else {
+				return NULL;
+			}
+		}
+		if (elem == this->data) {
+			return this;
+		}
+		else {
+			if (right) {
+				return right->find(elem);
+			}
+			else {
+				return NULL;
+			}
+		}
+	}
+
+	template <typename T> splaytreenode<T>* splaytreenode<T>::insert(T elem) {
+		if (elem < this->data) {
+			if (left != NULL) {
+				return left->insert(elem);
+			}
+			else {
+				left = new splaytreenode<T>(this,elem);
+				return left;
+			}
+		}
+		if (elem == this->data) {
+			this->data = elem;
+			return this;
+		}
+		else {
+			if (right != NULL) {
+				return right->insert(elem);
+			}
+			else {
+				right = new splaytreenode<T>(this,elem);
+				return right;
+			}
+		}
+	}
+
+	template <typename T> splaytreenode<T>* splaytreenode<T>::splay() {
+		if (this->up == NULL) {
+			return this; // done
+		}
+		splaytreenode<T>* parent = this->up;
+		bool wasLeft = parent->left == this;
+		splaytreenode<T>* grandparent = parent->up;
+		if (grandparent == NULL) {
+			if (wasLeft) {
+				return parent->zigright();
+			}
+			else {
+				return parent->zigleft();
+			}
+		}
+		bool wasFirstLeft = grandparent->left && wasLeft?
+			grandparent->left->left == this :
+			grandparent->left->right == this;
+		if (wasFirstLeft) {
+			if (wasLeft) {
+				return grandparent->zigzigright()->splay();
+			}
+			else {
+				return grandparent->zigzagright()->splay();
+			}
+		}
+		else {
+			if (wasLeft) {
+				return grandparent->zigzagleft()->splay();
+			}
+			else {
+				return grandparent->zigzigright()->splay();
+			}
+		}
+	}
+
+	template <typename T> splayset<T>::splayset() {
+		root = NULL;
+	}
+
+	template <typename T> size_t splayset<T>::size() {
+		if (root == NULL) {
+			return 0;
+		}
+		return root->size();
+	}
+
+	template <typename T> bool splayset<T>::empty() {
+		return root == NULL;
+	}
+
+	template <typename T> void splayset<T>::clear() {
+		delete root;
+		root = NULL;
+	}
+
+	template <typename T> void splayset<T>::add(T elem) {
+		if (root == NULL) {
+			root = new splaytreenode<T>(elem);
+		}
+		else {
+			root = root->insert(elem)->splay();
+		}
+	}
+
+	template <typename T> bool splayset<T>::contains(T elem) {
+		if (root == NULL) {
+			return false;
+			
+		}
+		else {
+			splaytreenode<T>* loc = root->find(elem);
+			if (loc == NULL) {
+				return false;
+			}
+			else {
+				root = loc->splay();
+				return true;
+			}
+		}
+	}
+
+	template <typename K, typename V> bool splaymap<K,V>::tuple::operator== (tuple& other) {
+		return key == other.key;
+	}
+
+	template <typename K, typename V> bool splaymap<K,V>::tuple::operator< (tuple& other) {
+		return key < other.key;
+	}
+
+	template <typename K,typename V> splaymap<K,V>::splaymap() {
+		root = NULL;
+	}
+
+	template <typename K,typename V> size_t splaymap<K,V>::size() {
+		if (root == NULL) {
+			return 0;
+		}
+		else {
+			return root->size();
+		}
+	}
+
+	template <typename K, typename V> bool splaymap<K,V>::empty() {
+		return root == NULL;
+	}
+
+	template <typename K, typename V> void splaymap<K,V>::clear() {
+		delete root;
+		root = NULL;
+	}
+
+	template <typename K, typename V> void splaymap<K,V>::put(K key, V value) {
+		tuple pair;
+		pair.key = key;
+		pair.value = value;
+		if (root == NULL) {
+			tuple pair;
+			pair.key = key;
+			pair.value = value;
+			root = new splaytreenode<tuple>(pair);
+		}
+		else {
+			root = root->insert(pair)->splay();
+		}
+	}
+
+	template <typename K, typename V> V splaymap<K,V>::get(K key) {
+		tuple pair;
+		pair.key = key;
+		if (root == NULL) {
+			return NULL;
+		}
+		splaytreenode<tuple>* loc = root->find(pair);
+		if (loc) {
+			root = loc->splay();
+			return loc->data.value;
+		}
+		return NULL;
+		
 	}
 }
 #endif
