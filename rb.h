@@ -1,3 +1,6 @@
+#ifndef rb_w
+#define rb_w
+#include <cstddef>
 namespace data {
 	template <typename T> class rbtreenode;
 
@@ -12,7 +15,7 @@ namespace data {
 		void add(T elem);
 		void remove(T elem);
 		bool contains(T elem);
-	}
+	};
 
 	template <typename K, typename V> class rbmap {
 	private:
@@ -22,12 +25,24 @@ namespace data {
 			bool operator== (tuple& other);
 			bool operator< (tuple& other);
 		};
-		rbtreenode<T>* root;
+		rbtreenode<tuple>* root;
 	public:	
 		rbmap();
 		size_t size();
 		bool empty();
 		void clear();
 		
-	}
+	};
+
+	template <typename T> class rbtreenode {
+	private:
+		rbtreenode<T> left;
+		rbtreenode<T> right;
+		T data;
+		bool isRed;
+	public:
+		rbtreenode(T data);
+		bool has(T data);
+	};
 }
+#endif

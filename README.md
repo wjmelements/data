@@ -25,7 +25,9 @@ rbset
 
 rbmap
 
-trie
+tangoset
+
+tangomap
 
 avlset
 

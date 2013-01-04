@@ -63,6 +63,7 @@ namespace data {
 		size_t size(); // O(n)
 		splaytreenode<T>* find(T elem); // O(log n)
 		splaytreenode<T>* insert(T elem); // O(log n)
+		splaytreenode<T>* remove(T elem); // O(log n)
 		splaytreenode<T>* splay(); // O(log n)
 	};
 
