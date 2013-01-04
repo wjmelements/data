@@ -42,8 +42,8 @@ namespace data {
 		public:
 			iterator(); // O(1)
 			iterator(bool forwards, linkedlistnode* current); // O(1)
-			iterator(const iterator &original); // O(!0
-			iterator& operator= (const iterator &original); // O(!0
+			iterator(const iterator &original); // O(1)
+			iterator& operator= (const iterator &original); // O(1)
 			bool operator== (const iterator &other); // O(1)
 			bool operator!= (const iterator &other); // O(1)
 			T& operator* (); // O(1)
