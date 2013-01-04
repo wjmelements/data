@@ -189,16 +189,17 @@ namespace data {
 		forwards = original.forwards;
 		root = original.root;
 		current = original.current;
+		return *this;
 	}
-	template trie<long long>::iterator& trie<long long>iterator::operator=(const iterator &original);
-	template trie<unsigned long long>::iterator& trie<unsigned long long>iterator::operator=(const iterator &original);
-	template trie<unsigned long>::iterator& trie<unsigned long>iterator::operator=(const iterator &original);
-	template trie<long>::iterator& trie<long>iterator::operator=(const iterator &original);
-	template trie<int>::iterator& trie<int>iterator::operator=(const iterator &original);
-	template trie<unsigned int>::iterator& trie<unsigned int>iterator::operator=(const iterator &original);
-	template trie<unsigned short>::iterator& trie<unsigned short>iterator::operator=(const iterator &original);
-	template trie<unsigned char>::iterator& trie<unsigned char>iterator::operator=(const iterator &original);
-	template trie<char>::iterator& trie<char>iterator::operator=(const iterator &original);
-	template trie<short>::iterator& trie<short>iterator::operator=(const iterator &original);
+	template trie<long long>::iterator& trie<long long>::iterator::operator=(const iterator &original);
+	template trie<unsigned long long>::iterator& trie<unsigned long long>::iterator::operator=(const iterator &original);
+	template trie<unsigned long>::iterator& trie<unsigned long>::iterator::operator=(const iterator &original);
+	template trie<long>::iterator& trie<long>::iterator::operator=(const iterator &original);
+	template trie<int>::iterator& trie<int>::iterator::operator=(const iterator &original);
+	template trie<unsigned int>::iterator& trie<unsigned int>::iterator::operator=(const iterator &original);
+	template trie<unsigned short>::iterator& trie<unsigned short>::iterator::operator=(const iterator &original);
+	template trie<unsigned char>::iterator& trie<unsigned char>::iterator::operator=(const iterator &original);
+	template trie<char>::iterator& trie<char>::iterator::operator=(const iterator &original);
+	template trie<short>::iterator& trie<short>::iterator::operator=(const iterator &original);
 
 }
