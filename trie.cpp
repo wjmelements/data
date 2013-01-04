@@ -48,6 +48,7 @@ namespace data {
 			}
 		}
 	}
+
 	template<typename T> trie<T>::trie() {
 		size_t max = 16;
 		this->children = new trie<T>*[max];
@@ -66,6 +67,7 @@ namespace data {
 	template trie<unsigned char>::trie<unsigned char>();
 	template trie<char>::trie<char>();
 	template trie<short>::trie<short>();
+
 	template<typename T> void trie<T>::put(const T t) {
 		if(t == 0) {
 			termination = true;
@@ -89,6 +91,7 @@ namespace data {
 	template void trie<unsigned char>::put(unsigned char);
 	template void trie<char>::put(char);
 	template void trie<short>::put(short);
+
 	template<typename T> bool trie<T>::has(const T t) {
 		if(t == 0) {
 			return termination;
@@ -97,9 +100,7 @@ namespace data {
 			T remains = t >> 4;
 			char first = t && 15;
 			if (children[first] == NULL) {
-				return false;
-			}
-			return children[first]->has(remains);
+				return false; } return children[first]->has(remains);
 		}
 	}
 	template bool trie<long long>::has(long long);
@@ -112,6 +113,7 @@ namespace data {
 	template bool trie<unsigned char>::has(unsigned char);
 	template bool trie<char>::has(char);
 	template bool trie<short>::has(short);
+
 	template<typename T> void trie<T>::remove(const T t) {
 		if(t == 0) {
 			termination = false;
@@ -134,5 +136,69 @@ namespace data {
 	template void trie<unsigned char>::remove(unsigned char);
 	template void trie<char>::remove(char);
 	template void trie<short>::remove(short);
+
+	template<typename T> trie<T>::iterator::iterator() {
+		forwards = true;
+		root = NULL;
+		current = 0;
+	}
+	template trie<long long>::iterator::iterator();
+	template trie<unsigned long long>::iterator::iterator();
+	template trie<unsigned long>::iterator::iterator();
+	template trie<long>::iterator::iterator();
+	template trie<int>::iterator::iterator();
+	template trie<unsigned int>::iterator::iterator();
+	template trie<unsigned short>::iterator::iterator();
+	template trie<unsigned char>::iterator::iterator();
+	template trie<char>::iterator::iterator();
+	template trie<short>::iterator::iterator();
+
+	template<typename T> trie<T>::iterator::iterator(bool forwards, trie<T>* root, T current) {
+		this->forwards = forwards;
+		this->root = root;
+		this->current = current;
+	}
+	template trie<long long>::iterator::iterator(bool forwards, trie<long long>* root, long long current);
+	template trie<unsigned long long>::iterator::iterator(bool forwards, trie<unsigned long long>* root, unsigned long long current);
+	template trie<unsigned long>::iterator::iterator(bool forwards, trie<unsigned long>* root, unsigned long current);
+	template trie<long>::iterator::iterator(bool forwards, trie<long>* root, long current);
+	template trie<int>::iterator::iterator(bool forwards, trie<int>* root, int current);
+	template trie<unsigned int>::iterator::iterator(bool forwards, trie<unsigned int>* root, unsigned int current);
+	template trie<unsigned short>::iterator::iterator(bool forwards, trie<unsigned short>* root, unsigned short current);
+	template trie<unsigned char>::iterator::iterator(bool forwards, trie<unsigned char>* root, unsigned char current);
+	template trie<char>::iterator::iterator(bool forwards, trie<char>* root, char current);
+	template trie<short>::iterator::iterator(bool forwards, trie<short>* root, short current);
+
+	template<typename T> trie<T>::iterator::iterator(const iterator &original) {
+		forwards = original.forwards;
+		root = original.root;
+		current = original.current;
+	}
+	template trie<long long>::iterator::iterator(const iterator &original);
+	template trie<unsigned long long>::iterator::iterator(const iterator &original);
+	template trie<unsigned long>::iterator::iterator(const iterator &original);
+	template trie<long>::iterator::iterator(const iterator &original);
+	template trie<int>::iterator::iterator(const iterator &original);
+	template trie<unsigned int>::iterator::iterator(const iterator &original);
+	template trie<unsigned short>::iterator::iterator(const iterator &original);
+	template trie<unsigned char>::iterator::iterator(const iterator &original);
+	template trie<char>::iterator::iterator(const iterator &original);
+	template trie<short>::iterator::iterator(const iterator &original);
+
+	template <typename T> trie<T>::iterator& trie<T>::iterator::operator= (const iterator &original) {
+		forwards = original.forwards;
+		root = original.root;
+		current = original.current;
+	}
+	template trie<long long>::iterator& trie<long long>iterator::operator=(const iterator &original);
+	template trie<unsigned long long>::iterator& trie<unsigned long long>iterator::operator=(const iterator &original);
+	template trie<unsigned long>::iterator& trie<unsigned long>iterator::operator=(const iterator &original);
+	template trie<long>::iterator& trie<long>iterator::operator=(const iterator &original);
+	template trie<int>::iterator& trie<int>iterator::operator=(const iterator &original);
+	template trie<unsigned int>::iterator& trie<unsigned int>iterator::operator=(const iterator &original);
+	template trie<unsigned short>::iterator& trie<unsigned short>iterator::operator=(const iterator &original);
+	template trie<unsigned char>::iterator& trie<unsigned char>iterator::operator=(const iterator &original);
+	template trie<char>::iterator& trie<char>iterator::operator=(const iterator &original);
+	template trie<short>::iterator& trie<short>iterator::operator=(const iterator &original);
 
 }
