@@ -288,11 +288,13 @@ namespace data {
             leftsub->up = NULL;
             splaytreenode<T>* root = leftsub;
             while (root->right != NULL) {
-                  root = root-> right;
+                  root = root->right;
             }
             root->splay();
-            root->right = rightsub;
-            rightsub->up = root;
+            if (rightsub != NULL) {
+                  root->right = rightsub;
+                  rightsub->up = root;
+            }
             return root;
       }
 

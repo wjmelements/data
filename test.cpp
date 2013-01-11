@@ -1,6 +1,7 @@
 #include "linkedlist.h" 
 #include "trie.h"
 #include "splay.h"
+#include "bogo.h"
 #include <cstddef>
 #include <iostream>
 using namespace std;
@@ -8,6 +9,7 @@ using data::linkedlist;
 using data::trie;
 using data::splayset;
 using data::splaymap;
+using data::bogoweb;
 int main() {
 	cout << "== Linked List ==\n";
 	int six = 6;
@@ -148,7 +150,7 @@ int main() {
 	}
       cout << "\nRemove all 10 values:\t";
       bool ssrtest = true;
-      for (unsigned int i = 0; i < 10; ++i) {
+      for (unsigned int i = 9; i < 10; --i) {
             digits.remove(i);
             if (digits.contains(i)) {
                   cout << i << ' ';
@@ -204,6 +206,27 @@ int main() {
             }
       }
       if (smrtest) {
+            cout << "Pass";
+      }
+      else {
+            cout << "Fail";
+      }
+      cout << "\n\n== Bogoweb ==";
+      bogoweb<unsigned int> sevenDigitNumbers;
+      cout << "\nInsert 1000 elements:\t";
+      for (unsigned int i = 0; i < 1000; ++i) {
+            sevenDigitNumbers.insert(i);
+      }
+      cout << "Pass";
+      cout << "\nContains all of those elements:\t";
+      bool bwctest = true;
+      for (unsigned int i = 0; i < 1000; ++i) {
+            if (!sevenDigitNumbers.contains(i)) {
+                  cout << i << endl;
+                  bwctest = false;
+            }
+      }
+      if (bwctest) {
             cout << "Pass";
       }
       else {

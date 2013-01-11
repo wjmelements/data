@@ -21,6 +21,8 @@ splayset -- Beta
 
 splaymap -- Beta
 
+bogoweb -- Alpha
+
 rbset
 
 rbmap
@@ -33,5 +35,4 @@ avlset
 
 avlmap
 
-bogosearchtree
 
