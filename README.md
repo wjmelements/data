@@ -1,7 +1,7 @@
 data
 ====
 
-C++ Library for a variety of data structures.
+Open-source C++ Library for a variety of data structures.
 
 == Key ==
 
@@ -17,9 +17,9 @@ linkedlist -- Beta
 
 trie -- Beta
 
-splayset -- Alpha
+splayset -- Beta
 
-splaymap -- Alpha
+splaymap -- Beta
 
 rbset
 

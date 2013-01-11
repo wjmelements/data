@@ -39,7 +39,7 @@ namespace data {
 		void clear(); // O(n)
 		void put(K key, V value); // O(log n)
 		V get(K key); // O(log n)
-		V remove(K key); // O(log n)
+		void remove(K key); // O(log n)
 	};
 
 	template <typename T>
@@ -270,6 +270,45 @@ namespace data {
 			}
 		}
 	}
+
+      template <typename T> splaytreenode<T>* splaytreenode<T>::remove(T elem) {
+            splaytreenode<T>* loc = find(elem);
+            if (loc == NULL) {
+                  return this;
+            }
+            loc->splay();
+            splaytreenode<T>* rightsub = loc->right;
+            splaytreenode<T>* leftsub = loc->left;
+            if (leftsub == NULL) {
+                  if (rightsub != NULL) {
+                        rightsub->up = NULL;
+                  }
+                  return rightsub;
+            }
+            leftsub->up = NULL;
+            splaytreenode<T>* root = leftsub;
+            while (root->right != NULL) {
+                  root = root-> right;
+            }
+            root->splay();
+            root->right = rightsub;
+            rightsub->up = root;
+            return root;
+      }
+
+      template <typename K, typename V> void splaymap<K,V>::remove(K key) {
+            if (root != NULL) {
+                  tuple elem;
+                  elem.key = key;
+                  root = root->remove(elem);
+            }
+      }
+
+      template <typename T> void splayset<T>::remove(T elem) {
+            if (root != NULL) {
+                  root = root->remove(elem);
+            }
+      }
 
 	template <typename K, typename V> bool splaymap<K,V>::tuple::operator== (tuple& other) {
 		return key == other.key;

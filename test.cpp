@@ -146,6 +146,21 @@ int main() {
 	else {
 		cout << "Fail";
 	}
+      cout << "\nRemove all 10 values:\t";
+      bool ssrtest = true;
+      for (unsigned int i = 0; i < 10; ++i) {
+            digits.remove(i);
+            if (digits.contains(i)) {
+                  cout << i << ' ';
+                  ssrtest = false;
+            }
+      }
+      if (ssrtest) {
+            cout << "Pass";
+      }
+      else {
+            cout << "Fail";
+      }
 	cout << '\n';
 	cout << "\n== Splay Map ==";
 	splaymap<char,unsigned int> charstodigits;
@@ -179,6 +194,21 @@ int main() {
 	else {
 		cout << "Fail";
 	}
-	cout << "\n";
+	cout << "\nRemove ten values:\t";
+      bool smrtest = true;
+      for (char i = '0'; i <= '9'; ++i) {
+            charstodigits.remove(i);
+            if (charstodigits.get(i) != NULL) {
+                  smrtest = false;
+                  cout << i << ' ';
+            }
+      }
+      if (smrtest) {
+            cout << "Pass";
+      }
+      else {
+            cout << "Fail";
+      }
+      cout << '\n' << endl;
 	return 0;
 }
