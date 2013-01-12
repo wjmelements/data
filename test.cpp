@@ -2,6 +2,7 @@
 #include "trie.h"
 #include "splay.h"
 #include "bogo.h"
+#include "avl.h"
 #include <cstddef>
 #include <iostream>
 using namespace std;
@@ -10,6 +11,8 @@ using data::trie;
 using data::splayset;
 using data::splaymap;
 using data::bogoweb;
+using data::avlset;
+using data::avlmap;
 int main() {
 	cout << "== Linked List ==\n";
 	int six = 6;
@@ -227,6 +230,44 @@ int main() {
             }
       }
       if (bwctest) {
+            cout << "Pass";
+      }
+      else {
+            cout << "Fail";
+      }
+      cout << "\n\n== AVL Set ==";
+      avlset<char> hexChars;
+      for (char letter = 'A'; letter <= 'F'; ++letter) {
+            hexChars.add(letter);
+      }
+      bool avlstest = true;
+      cout << "\nAdds 6 values and contains them:\t";
+      for (char letter = 'A'; letter <= 'F'; ++letter) {
+            if(!hexChars.contains(letter)) {
+                  cout << letter;
+                  avlstest = false;
+            }
+      }
+      if (avlstest) {
+            cout << "Pass";
+      }
+      else {
+            cout << "Fail";
+      }
+      bool test;
+      cout << "\n\n== AVL Map ==";
+      avlmap<char,unsigned int> offsetMap;
+      for (char i = 0; i < 16; ++i) {
+            offsetMap.put(i,(unsigned int)i + 48);
+      }
+      test = true;
+      for (char i = 0; i < 16; ++i) {
+            if (offsetMap.get(i) != (unsigned int) i + 48) {
+                  test = false;
+            }
+      }
+      cout << "\nContains all 16 values inserted:\t";
+      if (test) {
             cout << "Pass";
       }
       else {
