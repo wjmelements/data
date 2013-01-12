@@ -23,6 +23,10 @@ splaymap -- Beta
 
 bogoweb -- Alpha
 
+avlset -- Alpha
+
+avlmap -- Alpha
+
 rbset
 
 rbmap
@@ -30,9 +34,3 @@ rbmap
 tangoset
 
 tangomap
-
-avlset
-
-avlmap
-
-
