@@ -108,7 +108,7 @@ namespace data {
 
 	template <typename T> splaytreenode<T>* splaytreenode<T>::zigright() {
 		splaytreenode<T>* tosplay = this->left;
-		this->left = tosplay->right;
+		this->left = tosplay->right; // here
 		tosplay->right = this;
 		tosplay->up = this->up;
 		if (tosplay->up != NULL) {
@@ -118,7 +118,7 @@ namespace data {
 			else {
 				tosplay->up->right = tosplay;
 			}
-		}		this->up = tosplay;
+		}
 		this->up = tosplay;
 		if (this->left != NULL) {
 			this->left->up = this;
@@ -135,11 +135,13 @@ namespace data {
 	}
 
 	template <typename T> splaytreenode<T>* splaytreenode<T>::zigzagleft() {
-		return right->zigright()->zigleft();
+            right->zigright();
+		return zigleft();
 	}
 
 	template <typename T> splaytreenode<T>* splaytreenode<T>::zigzagright() {
-		return left->zigleft()->zigright();
+            left->zigleft();
+		return zigright();
 	}
 
 	template <typename T> splaytreenode<T>* splaytreenode<T>::find(T elem) {
@@ -204,9 +206,9 @@ namespace data {
 				return parent->zigleft();
 			}
 		}
-		bool wasFirstLeft = grandparent->left && wasLeft?
+		bool wasFirstLeft = grandparent->left && (wasLeft?
 			grandparent->left->left == this :
-			grandparent->left->right == this;
+			grandparent->left->right == this);
 		if (wasFirstLeft) {
 			if (wasLeft) {
 				return grandparent->zigzigright()->splay();
@@ -220,7 +222,7 @@ namespace data {
 				return grandparent->zigzagleft()->splay();
 			}
 			else {
-				return grandparent->zigzigright()->splay();
+				return grandparent->zigzigleft()->splay();
 			}
 		}
 	}
@@ -257,7 +259,6 @@ namespace data {
 	template <typename T> bool splayset<T>::contains(T elem) {
 		if (root == NULL) {
 			return false;
-			
 		}
 		else {
 			splaytreenode<T>* loc = root->find(elem);

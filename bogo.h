@@ -33,11 +33,17 @@ namespace data {
       template <typename T> bogoweb<T>::bogoweb(T elem) {
             root = new bogonode<T>;
             root->data = elem;
+            root->up = NULL;
+            root->left = NULL;
+            root->right = NULL;
       }
       template <typename T> void bogoweb<T>::insert(T elem) {
             if (root == NULL) {
                   root = new bogonode<T>;
                   root->data = elem;
+                  root->up = NULL;
+                  root->left = NULL;
+                  root->right = NULL;
             }
             else {
                   bool toInsert = true;
@@ -51,12 +57,15 @@ namespace data {
                               else {
                                     current->up = new bogonode<T>;
                                     current->up->data = elem;
-                                    if (rand() % 2) {
+                                    if (rand() & 1) {
                                           current->up->right = current;
+                                          current->up->left = NULL;
                                     }
                                     else {
                                           current->up->left = current;
+                                          current->up->right = NULL;
                                     }
+                                    current->up->up = NULL;
                                     toInsert = false;
                               }
                         break;
@@ -68,8 +77,11 @@ namespace data {
                                     current->left = new bogonode<T>;
                                     current->left->data = elem;
                                     current->left->up = current;
+                                    current->left->left = NULL;
+                                    current->left->right = NULL;
                                     toInsert = false;
                               }
+                        break;
                         case 2: // right
                               if (current->right) {
                                     current = current->right;
@@ -78,18 +90,21 @@ namespace data {
                                     current->right = new bogonode<T>;
                                     current->right->data = elem;
                                     current->right->up = current;
+                                    current->right->left = NULL;
+                                    current->right->right = NULL;
                                     toInsert = false;
                               }
+                        break;
                         }
                   }
             }
       }
 
       template <typename T> bool bogoweb<T>::contains(T elem) {
-            // it makes sense to use splay sets here because it will keep local values closer
             if (root == NULL) {
                   return false;
             }
+            // it makes sense to use splay sets here because it will keep local values closer
             splayset<bogonode<T>*> toVisit;
             splayset<bogonode<T>*> visited;
             bogonode<T>* current = root;
@@ -97,8 +112,6 @@ namespace data {
                   if (current->data == elem) {
                         return true;
                   }
-                  toVisit.remove(current);
-                  visited.add(current);
                   if (current->left != NULL) {
                         if (!visited.contains(current->left)) {
                               toVisit.add(current->left);
@@ -114,6 +127,8 @@ namespace data {
                               toVisit.add(current->up);
                         }
                   }
+                  visited.add(current);
+                  toVisit.remove(current);
                   switch (rand() % 3) {
                   case 0: // up
                         if (current->up != NULL) {

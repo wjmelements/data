@@ -212,16 +212,16 @@ int main() {
             cout << "Fail";
       }
       cout << "\n\n== Bogoweb ==";
-      bogoweb<unsigned int> sevenDigitNumbers;
-      cout << "\nInsert 1000 elements:\t";
-      for (unsigned int i = 0; i < 1000; ++i) {
-            sevenDigitNumbers.insert(i);
+      bogoweb<unsigned int> twoDigitNumbers;
+      cout << "\nInsert 100 elements:\t";
+      for (unsigned int i = 0; i < 100; ++i) {
+            twoDigitNumbers.insert(i);
       }
       cout << "Pass";
       cout << "\nContains all of those elements:\t";
       bool bwctest = true;
-      for (unsigned int i = 0; i < 1000; ++i) {
-            if (!sevenDigitNumbers.contains(i)) {
+      for (unsigned int i = 0; i < 100; ++i) {
+            if (!twoDigitNumbers.contains(i)) {
                   cout << i << endl;
                   bwctest = false;
             }
