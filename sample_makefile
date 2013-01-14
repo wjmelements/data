@@ -1,6 +1,8 @@
 all:
-	icpc -O3 *.cpp -o test
+	g++ -O3 *.cpp -o test
+debug:
+	g++ -D DEBUG -Wall *.cpp -o test
 clean:
-	rm *.o
+	rm test
 run:
 	./test
