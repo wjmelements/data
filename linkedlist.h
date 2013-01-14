@@ -100,7 +100,7 @@ namespace data {
 			this->last = NULL;
 		}
 	}
-	template <typename T> linkedlist<T>::linkedlist<T>(const linkedlist<T> &original) {
+	template <typename T> linkedlist<T>::linkedlist(const linkedlist<T> &original) {
 		count = 0;
 		iterator end = original.end();
 		for(iterator it = original.begin(); it != end; ++it) {
@@ -225,7 +225,7 @@ namespace data {
 		this->forwards = forwards;
 		this->current = current;
 	}
-	template <typename T> linkedlist<T>::iterator& linkedlist<T>::iterator::operator= (const linkedlist<T>::iterator &original) {
+	template <typename T> typename linkedlist<T>::iterator& linkedlist<T>::iterator::operator= (const linkedlist<T>::iterator &original) {
 		this->forwards = original.forwards;
 		this->current = original.current;
 	}
@@ -238,7 +238,7 @@ namespace data {
 	template <typename T> bool linkedlist<T>::iterator::operator== (const linkedlist<T>::iterator &other) {
 		return this->current == other.current && this->forwards == other.forwards;
 	}
-	template <typename T> linkedlist<T>::iterator& linkedlist<T>::iterator::operator++() {
+	template <typename T> typename linkedlist<T>::iterator& linkedlist<T>::iterator::operator++() {
 		if (this->forwards) {
 			current = current->next;
 			return *this;
@@ -248,7 +248,7 @@ namespace data {
 			return *this;
 		}
 	}
-	template <typename T> linkedlist<T>::iterator& linkedlist<T>::iterator::operator--() {
+	template <typename T> typename linkedlist<T>::iterator& linkedlist<T>::iterator::operator--() {
 		if (this->forwards) {
 			current = current->prev;
 			return *this;
@@ -258,7 +258,7 @@ namespace data {
 			return *this;
 		}
 	}
-	template <typename T> linkedlist<T>::iterator linkedlist<T>::iterator::operator++(int) {
+	template <typename T> typename linkedlist<T>::iterator linkedlist<T>::iterator::operator++(int) {
 		iterator copy(this->forwards,this->current);
 		if (this->forwards) {
 			current = current->next;
@@ -269,7 +269,7 @@ namespace data {
 			return copy;
 		}
 	}
-	template <typename T> linkedlist<T>::iterator linkedlist<T>::iterator::operator--(int) {
+	template <typename T> typename linkedlist<T>::iterator linkedlist<T>::iterator::operator--(int) {
 		iterator copy(this->forwards,this->current);
 		if (this->forwards) {
 			current = current->prev;
@@ -280,16 +280,16 @@ namespace data {
 			return copy;
 		}
 	}
-	template <typename T> linkedlist<T>::iterator linkedlist<T>::begin() {
+	template <typename T> typename linkedlist<T>::iterator linkedlist<T>::begin() {
 		return iterator(true,this->first);
 	}
-	template <typename T> linkedlist<T>::iterator linkedlist<T>::end() {
+	template <typename T> typename linkedlist<T>::iterator linkedlist<T>::end() {
 		return iterator(true,NULL);
 	}
-	template <typename T> linkedlist<T>::iterator linkedlist<T>::rbegin() {
+	template <typename T> typename linkedlist<T>::iterator linkedlist<T>::rbegin() {
 		return iterator(false,this->last);
 	}
-	template <typename T> linkedlist<T>::iterator linkedlist<T>::rend() {
+	template <typename T> typename linkedlist<T>::iterator linkedlist<T>::rend() {
 		return iterator(false,NULL);
 	}
 } // namespace data
