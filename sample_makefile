@@ -1,7 +1,7 @@
 all:
-	g++ -O3 *.cpp -o test
+	g++ -O3 test.cpp -o test
 debug:
-	g++ -D DEBUG -Wall *.cpp -o test
+	g++ -D DEBUG -Wall test.cpp -o test
 clean:
 	rm test
 run:
