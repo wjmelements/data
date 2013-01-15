@@ -2,6 +2,13 @@
 #define avl_w
 #include <cstddef>
 #include "util.h"
+
+#ifdef DEBUG
+#include <iostream>
+using std::cout;
+using std::endl;
+#endif
+
 namespace data {
 
       #ifndef NULL
@@ -23,6 +30,9 @@ namespace data {
             size_t height(); // O(1)
             bool empty(); // O(1)
             void clear(); // O(n)
+			#ifdef DEBUG
+			void sanityCheck();
+			#endif
       };
 
       template <typename K, typename V>
@@ -45,6 +55,9 @@ namespace data {
             size_t height(); // O(1)
             bool empty(); // O(1)
             void clear(); // O(n)
+			#ifdef DEBUG
+			void sanityCheck();
+			#endif
       };
 
       template <typename T>
@@ -63,6 +76,9 @@ namespace data {
             avltreenode<T>* find(T elem);
             bool contains(T elem);
             avltreenode<T>* remove(T elem);
+			#ifdef DEBUG
+			void sanityCheck();
+			#endif
       };
 
       template <typename T> avltreenode<T>* avltreenode<T>::rotateLeft() {
@@ -184,9 +200,15 @@ namespace data {
             else {
                   root = new avltreenode<T>(elem);
             }
+			#ifdef DEBUG
+			sanityCheck();
+			#endif
       }
 
       template <typename T> bool avlset<T>::contains(T elem) {
+			#ifdef DEBUG
+			sanityCheck();
+			#endif
             if (root) {
                   return root->contains(elem);
             }
@@ -214,9 +236,15 @@ namespace data {
             else {
                   root = new avltreenode<tuple>(map);
             }
+			#ifdef DEBUG
+			sanityCheck();
+			#endif
       }
 
       template <typename K,typename V> V avlmap<K,V>::get(K key) {
+			#ifdef DEBUG
+			sanityCheck();
+			#endif
             if (root == NULL) {
                   return NULL;
             }
@@ -232,6 +260,37 @@ namespace data {
       template <typename K,typename V> bool avlmap<K,V>::tuple::operator== (const avlmap<K,V>::tuple& other) {
             return key == other.key;
       }
+
+	#ifdef DEBUG
+	template <typename T> void avlset<T>::sanityCheck() {
+		root->sanityCheck();
+	}
+
+	template <typename K,typename V> void avlmap<K,V>::sanityCheck() {
+		root->sanityCheck();
+	}
+
+	template <typename T> void avltreenode<T>::sanityCheck() {
+		
+		if (left) {
+			left->sanityCheck();
+			if (leftHeight != max(left->leftHeight,left->rightHeight) + 1) {
+				cout << "leftHeight is " << leftHeight << " but should be " << max(left->leftHeight,left->rightHeight) + 1 << endl;
+			}
+		}
+		else {
+			if (leftHeight != 0) {
+				cout << "leftHeight is not 0 but left node is NULL" << endl;
+			}
+		}
+		if (right) {
+			right->sanityCheck();
+			if (rightHeight != max(right->rightHeight,right->leftHeight) + 1) {
+				cout << "rightHeight is " << rightHeight << " but should be " << max(right->rightHeight,right->leftHeight) + 1 << endl;
+			}
+		}
+	}
+	#endif
 
 }
 #endif
