@@ -14,6 +14,7 @@ using data::bogoweb;
 using data::avlset;
 using data::avlmap;
 int main() {
+
 	cout << "== Linked List ==\n";
 	int six = 6;
 	linkedlist<linkedlist<int> > temp;
@@ -21,7 +22,7 @@ int main() {
 	if(sicks.at(0) != 6) {
 		cout << "Single element list creation: Fail" << endl;
 	}
-	int size = 26;
+	size_t size = 26;
 	char* alphabet = new char[size];
 	linkedlist<char> alpha2;
 	for(size_t letter = 0; letter < size; letter++)
@@ -168,7 +169,7 @@ int main() {
       }
 	cout << '\n';
 	cout << "\n== Splay Map ==";
-	splaymap<char,unsigned int> charstodigits;
+	splaymap<unsigned char,unsigned int> charstodigits;
 	cout << "\nConstructed with size zero:\t";
 	if (charstodigits.size() == 0) {
 		cout << "Pass";
