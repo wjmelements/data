@@ -2,6 +2,7 @@
 #define rb_w
 #include <cstddef>
 namespace data {
+
 	template <typename T> class rbtreenode;
 
 	template <typename T> class rbset {
@@ -36,13 +37,13 @@ namespace data {
 
 	template <typename T> class rbtreenode {
 	private:
-		rbtreenode<T> left;
-		rbtreenode<T> right;
+		rbtreenode<T>* left;
+		rbtreenode<T>* right;
 		T data;
 		bool isRed;
 	public:
-		rbtreenode(T data);
-		bool has(T data);
+		rbtreenode(T elem);
+		bool has(T elem);
 	};
 }
 #endif
