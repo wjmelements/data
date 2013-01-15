@@ -1,0 +1,8 @@
+all:
+	g++ -O3 *.cpp -o test
+debug:
+	g++ -D DEBUG -Wall *.cpp -o test
+clean:
+	rm test
+run:
+	./test

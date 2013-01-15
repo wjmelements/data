@@ -20,6 +20,9 @@ namespace data {
 		void add(T elem); // O(log n)
 		void remove(T elem); // O(log n)
 		bool contains(T elem); // O(log n)
+        #ifdef DEBUG
+        void sanityCheck();
+        #endif
 	};
 
 	template <typename K, typename V>
@@ -40,6 +43,10 @@ namespace data {
 		void put(K key, V value); // O(log n)
 		V get(K key); // O(log n)
 		void remove(K key); // O(log n)
+        #ifdef DEBUG
+        void sanityCheck();
+        #endif
+
 	};
 
 	template <typename T>
@@ -65,6 +72,10 @@ namespace data {
 		splaytreenode<T>* insert(T elem); // O(log n)
 		splaytreenode<T>* remove(T elem); // O(log n)
 		splaytreenode<T>* splay(); // O(log n)
+        #ifdef DEBUG
+        void sanityCheck();
+        #endif
+
 	};
 
 	template <typename T> splaytreenode<T>::splaytreenode(T elem) {
@@ -372,5 +383,15 @@ namespace data {
 		return NULL;
 		
 	}
+    #ifdef DEBUG
+    template <typename T> void splaytreenode<T>::sanityCheck() {
+        if (left) {
+            left->sanityCheck();
+        }
+        if (right) {
+            right->sanityCheck();
+        }
+    }
+    #endif
 }
 #endif
