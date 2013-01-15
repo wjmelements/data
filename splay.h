@@ -1,5 +1,12 @@
 #ifndef splay_w
 #define splay_w
+
+#ifdef DEBUG
+#include <iostream>
+using std::cout;
+using std::endl;
+#endif
+
 #include <cstddef>
 namespace data {
 	#ifndef NULL
@@ -73,7 +80,7 @@ namespace data {
 		splaytreenode<T>* remove(T elem); // O(log n)
 		splaytreenode<T>* splay(); // O(log n)
         #ifdef DEBUG
-        void sanityCheck();
+        void sanityCheck(bool isRoot = true);
         #endif
 
 	};
@@ -264,6 +271,12 @@ namespace data {
 		}
 		else {
 			root = root->insert(elem)->splay();
+			#ifdef DEBUG
+			sanityCheck();
+			if (root->data != elem) {
+				cout << "Insert: element was not splayed to root" << endl;
+			}
+			#endif
 		}
 	}
 
@@ -278,6 +291,12 @@ namespace data {
 			}
 			else {
 				root = loc->splay();
+				#ifdef DEBUG
+				sanityCheck();
+				if (root->data != elem) {
+					cout << "Contains: element was not splayed to root" << endl;
+				}
+				#endif
 				return true;
 			}
 		}
@@ -366,6 +385,12 @@ namespace data {
 		}
 		else {
 			root = root->insert(pair)->splay();
+			#ifdef DEBUG
+			sanityCheck();
+			if (!(root->data == pair)) {
+				cout << "Put: inserted data was not splayed to root" << endl;
+			}
+			#endif
 		}
 	}
 
@@ -378,18 +403,40 @@ namespace data {
 		splaytreenode<tuple>* loc = root->find(pair);
 		if (loc) {
 			root = loc->splay();
+			#ifdef DEBUG
+			sanityCheck();
+			if (root->data.key != key) {
+				cout << "Get: read only access was not splayed to root" << endl;
+			}
+			#endif
 			return loc->data.value;
 		}
 		return NULL;
 		
 	}
     #ifdef DEBUG
-    template <typename T> void splaytreenode<T>::sanityCheck() {
+	template <typename K, typename V> void splaymap<K,V>::sanityCheck() {
+		root->sanityCheck(true);
+	}
+
+	template <typename T> void splayset<T>::sanityCheck() {
+		root->sanityCheck(true);
+	}
+
+    template <typename T> void splaytreenode<T>::sanityCheck(bool isRoot) {
+		if (isRoot xor up == NULL) {
+			if (isRoot) {
+				cout << "Root has an up pointer that isn't NULL" << endl;
+			}
+			else {
+				cout << "Non-root node has a NULL up pointer" << endl;
+			}
+		}
         if (left) {
-            left->sanityCheck();
+            left->sanityCheck(false);
         }
         if (right) {
-            right->sanityCheck();
+            right->sanityCheck(false);
         }
     }
     #endif
