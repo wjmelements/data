@@ -3,6 +3,7 @@
 #include "splay.h"
 #include "bogo.h"
 #include "avl.h"
+#include "util.h"
 #include <cstddef>
 #include <iostream>
 using namespace std;
@@ -13,6 +14,7 @@ using data::splaymap;
 using data::bogoweb;
 using data::avlset;
 using data::avlmap;
+using data::mergesort;
 int main() {
 
 	cout << "== Linked List ==\n";
@@ -274,6 +276,26 @@ int main() {
       else {
             cout << "Fail";
       }
+	cout << "\n\n== Util ==";
+	int* array = new int[10];
+	for (size_t i = 0; i < 10; ++i) {
+		array[i] = 9 - i;
+	}
+	cout << "\nMergesort: ";
+	array = mergesort(array,10);
+	test = true;
+	for (size_t i = 0; i < 10; ++i) {
+		if (array[i] != i) {
+			cout << i;
+			test = false;
+		}
+	}
+	if (test) {
+		cout << "Pass";
+	}
+	else {
+		cout << "Fail";
+	}
       cout << '\n' << endl;
 	return 0;
 }
