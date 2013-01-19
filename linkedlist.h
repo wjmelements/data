@@ -31,8 +31,8 @@ namespace data {
 		T& at(size_t index); // O(n)
 		void push_back(const T& append); // O(1)
 		void push_front(const T& prepend); // O(1)
-		T& pop_back(); // O(1)
-		T& pop_front(); // O(1)
+		T pop_back(); // O(1)
+		T pop_front(); // O(1)
 		bool empty(); // O(1)
 		void clear(); // O(n)
 		class iterator {
@@ -171,7 +171,7 @@ namespace data {
 			return current->data;
 		}
 	}
-	template <typename T> T& linkedlist<T>::pop_back() {
+	template <typename T> T linkedlist<T>::pop_back() {
 		linkedlistnode* popped = this->last;
 		this->last = popped->prev;
 		if (this->last == NULL)
@@ -187,7 +187,7 @@ namespace data {
 		delete popped;
 		return data;
 	}
-	template <typename T> T& linkedlist<T>::pop_front() {
+	template <typename T> T linkedlist<T>::pop_front() {
 		linkedlistnode* popped = this->first;
 		this->first = popped->next;
 		if (this->first == NULL)
