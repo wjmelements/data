@@ -2,6 +2,7 @@
 #define avl_w
 #include <cstddef>
 #include "util.h"
+#include "linkedlist.h"
 
 #ifdef DEBUG
 #include <iostream>
@@ -25,7 +26,7 @@ namespace data {
 		avlset(T elem);
 		void add(T elem); // O(log n)
 		bool contains(T elem); // O(log n)
-		bool remove(T elem); // O(log n)
+		void remove(T elem); // O(log n)
 		size_t size(); // O(n)
 		size_t height(); // O(1)
 		bool empty(); // O(1)
@@ -55,9 +56,9 @@ namespace data {
 		size_t height(); // O(1)
 		bool empty(); // O(1)
 		void clear(); // O(n)
-			#ifdef DEBUG
-			void sanityCheck();
-			#endif
+		#ifdef DEBUG
+		void sanityCheck();
+		#endif
 	};
 
 	template <typename T>
@@ -76,9 +77,9 @@ namespace data {
 		avltreenode<T>* find(T elem);
 		bool contains(T elem);
 		avltreenode<T>* remove(T elem);
-			#ifdef DEBUG
-			void sanityCheck();
-			#endif
+		#ifdef DEBUG
+		void sanityCheck();
+		#endif
 	};
 
 	template <typename T> avltreenode<T>* avltreenode<T>::rotateLeft() {
@@ -200,15 +201,15 @@ namespace data {
 		else {
 			root = new avltreenode<T>(elem);
 		}
-			#ifdef DEBUG
-			sanityCheck();
-			#endif
+		#ifdef DEBUG
+		sanityCheck();
+		#endif
 	}
 
 	template <typename T> bool avlset<T>::contains(T elem) {
-			#ifdef DEBUG
-			sanityCheck();
-			#endif
+		#ifdef DEBUG
+		sanityCheck();
+		#endif
 		if (root) {
 			return root->contains(elem);
 		}
@@ -236,15 +237,15 @@ namespace data {
 		else {
 			root = new avltreenode<tuple>(map);
 		}
-			#ifdef DEBUG
-			sanityCheck();
-			#endif
+		#ifdef DEBUG
+		sanityCheck();
+		#endif
 	}
 
 	template <typename K,typename V> V avlmap<K,V>::get(K key) {
-			#ifdef DEBUG
-			sanityCheck();
-			#endif
+		#ifdef DEBUG
+		sanityCheck();
+		#endif
 		if (root == NULL) {
 			return NULL;
 		}
@@ -261,16 +262,139 @@ namespace data {
 		return key == other.key;
 	}
 
+	template <typename T> void avlset<T>::remove(T elem) {
+		if (root) {
+			root = root->remove(elem);
+		}
+	}
+
+	template <typename K, typename V> void avlmap<K,V>::remove(K key) {
+		if (root) {
+			tuple find;
+			find.key = key;
+			root = root->remove(find);
+		}
+	}
+
+
+	template <typename T> avltreenode<T>* avltreenode<T>::remove(T elem) {
+		if (elem < data) {
+			if (left) {
+				if (left = left->remove(elem)) {
+					leftHeight = 1 + max(left->leftHeight,left->rightHeight);
+				}
+				else {
+					leftHeight = 0;
+				}
+				if (rightHeight > 1 + leftHeight) {
+					if (right->rightHeight < right->leftHeight) {
+						right = right->rotateRight();
+					}
+					return rotateLeft();
+				}
+			}
+			return this;
+		}
+		if (elem == data) {
+			if (left) {
+				if (right) {
+					// find next inorder node
+					avltreenode<T>* swap = right;
+					linkedlist<avltreenode<T>*> stack;
+					while (swap->left != NULL) {
+						stack.push_back(swap);
+						swap = swap->left;
+					}
+					this->data = swap->data;
+					if (stack.empty()) {
+						right = right->right;
+						--rightHeight;
+						if (leftHeight - rightHeight > 1) {
+							if (left->right && left->left == NULL) {
+								left = left->rotateLeft();
+							}
+							return rotateRight();
+						}
+						return this;
+					}
+					// removal
+					avltreenode<T>* pre = stack.pop_back();
+					pre->left = swap->right;
+					pre->leftHeight--;
+					// adjustment
+					while (!stack.empty()) {
+						pre = stack.pop_back();
+						pre->leftHeight = 1 + max(pre->left->leftHeight,pre->left->rightHeight);
+						if (pre->left->rightHeight - pre->left->leftHeight > 1) {
+							if (pre->left->right->leftHeight > pre->left->right->rightHeight) {
+								pre->left->right = pre->left->right->rotateLeft();
+							}
+							pre->left = pre->left->rotateLeft();
+						}
+					}
+					// pre is now right
+					if (right->rightHeight - right->leftHeight > 1) {
+						if (right->right->leftHeight - right->right->rightHeight > 1) {
+							right->right = right->right->rotateRight();
+						}
+						right = right->rotateLeft();
+					}
+					rightHeight = 1 + max(right->leftHeight,right->rightHeight);
+					if (leftHeight - rightHeight > 1) {
+						if (left->rightHeight - left->leftHeight > 1) {
+							left = left->rotateLeft();
+						}
+						return rotateRight();
+					}
+					return this;
+				}
+				else {
+					return left;
+				}
+			}
+			else {
+				return right;
+			}
+		}
+		if (right) {
+			if (right) {
+				if (right = right->remove(elem)) {
+					rightHeight = 1 + max(right->leftHeight,right->rightHeight);
+				}
+				else {
+					rightHeight = 0;
+				}
+				if (leftHeight > 1 + rightHeight) {
+					if (left->leftHeight < left->rightHeight) {
+						left = left->rotateLeft();
+					}
+					return rotateRight();
+				}
+			}
+		}
+		return this;
+	}
+
 	#ifdef DEBUG
 	template <typename T> void avlset<T>::sanityCheck() {
-		root->sanityCheck();
+		if (root) {
+			root->sanityCheck();
+		}
 	}
 
 	template <typename K,typename V> void avlmap<K,V>::sanityCheck() {
-		root->sanityCheck();
+		if (root) {
+			root->sanityCheck();
+		}
 	}
 
 	template <typename T> void avltreenode<T>::sanityCheck() {
+		if (leftHeight > rightHeight + 1) {
+			cout << "Left Height is too large" << leftHeight << rightHeight << endl;
+		}
+		else if (rightHeight > leftHeight + 1) {
+			cout << "Right height is too large:" << rightHeight << leftHeight << endl;
+		}
 		if (left) {
 			left->sanityCheck();
 			if (leftHeight != max(left->leftHeight,left->rightHeight) + 1) {

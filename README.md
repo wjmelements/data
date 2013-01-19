@@ -9,6 +9,8 @@ The definition and implementation of templates are in the same file. Definitions
 
 datastructure -- Condition
 
+Conditions:
+
 Alpha - partially functional and in development
 
 Beta - very functional but requires testing and refining
@@ -25,9 +27,9 @@ splaymap -- Beta
 
 bogoweb -- Alpha
 
-avlset -- Alpha
+avlset -- Beta
 
-avlmap -- Alpha
+avlmap -- Beta
 
 rbset
 

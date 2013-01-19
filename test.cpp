@@ -238,6 +238,20 @@ int main() {
       else {
             cout << "Fail";
       }
+	cout << "\nDoes not contain other elements:\t";
+	bwctest = true;
+	for (unsigned int i = 100; i < 200; ++i) {
+		if (twoDigitNumbers.contains(i)) {
+			cout << i << endl;
+			bwctest = false;
+		}
+	}
+	if (bwctest) {
+		cout << "Pass";
+	}
+	else {
+		cout << "Fail";
+	}
       cout << "\n\n== AVL Set ==";
       avlset<char> hexChars;
       for (char letter = 'A'; letter <= 'F'; ++letter) {
@@ -257,7 +271,21 @@ int main() {
       else {
             cout << "Fail";
       }
-      bool test;
+      bool test = true;
+	for (char letter = 'A'; letter <= 'F'; ++letter) {
+		hexChars.remove(letter);
+		if (hexChars.contains(letter)) {
+			cout << letter;
+			test = false;
+		}
+	}
+	cout << "\nRemoves them and no longer contains them:\t";
+	if (test) {
+		cout << "Pass";
+	}
+	else {
+		cout << "Fail";
+	}
       cout << "\n\n== AVL Map ==";
       avlmap<char,unsigned int> offsetMap;
       for (char i = 0; i < 16; ++i) {
@@ -281,7 +309,7 @@ int main() {
 	for (size_t i = 0; i < 10; ++i) {
 		array[i] = 9 - i;
 	}
-	cout << "\nMergesort: ";
+	cout << "\nMergesort:\t";
 	array = mergesort(array,10);
 	test = true;
 	for (size_t i = 0; i < 10; ++i) {
