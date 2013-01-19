@@ -12,27 +12,27 @@ namespace data {
 			T data;
 			linkedlistnode* next;
 			linkedlistnode* prev;
-			linkedlistnode(T data, linkedlistnode* next = NULL);
-			linkedlistnode(linkedlistnode* prev, T data, linkedlistnode* next = NULL);
+			linkedlistnode(const T& data, linkedlistnode* next = NULL);
+			linkedlistnode(linkedlistnode* prev, const T& data, linkedlistnode* next = NULL);
 		};
 		size_t count;
 		linkedlistnode* first;
 		linkedlistnode* last;
 	public:
 		linkedlist(); // O(1)
-		linkedlist(T first); // O(1)
+		linkedlist(const T& first); // O(1)
 		linkedlist(T* elements, size_t size); // O(n)
-		linkedlist(const linkedlist<T> &original); // O(n)
-		linkedlist<T>& operator= (const linkedlist<T> &original); //O(n)
+		linkedlist(const linkedlist<T>& original); // O(n)
+		linkedlist<T>& operator= (const linkedlist<T>& original); // O(n)
 		~linkedlist(); // O(n)
 		size_t size(); // O(1)
 		T& front(); // O(1)
 		T& back(); // O(1)
 		T& at(size_t index); // O(n)
-		void push_back(T append); // O(1)
-		void push_front(T prepend); // O(1)
-		T pop_back(); // O(1)
-		T pop_front(); // O(1)
+		void push_back(const T& append); // O(1)
+		void push_front(const T& prepend); // O(1)
+		T& pop_back(); // O(1)
+		T& pop_front(); // O(1)
 		bool empty(); // O(1)
 		void clear(); // O(n)
 		class iterator {
@@ -42,10 +42,10 @@ namespace data {
 		public:
 			iterator(); // O(1)
 			iterator(bool forwards, linkedlistnode* current); // O(1)
-			iterator(const iterator &original); // O(1)
-			iterator& operator= (const iterator &original); // O(1)
-			bool operator== (const iterator &other); // O(1)
-			bool operator!= (const iterator &other); // O(1)
+			iterator(const iterator& original); // O(1)
+			iterator& operator= (const iterator& original); // O(1)
+			bool operator== (const iterator& other); // O(1)
+			bool operator!= (const iterator& other); // O(1)
 			T& operator* (); // O(1)
 			iterator& operator++(); // O(1)
 			iterator& operator--(); // O(1)
@@ -62,12 +62,12 @@ namespace data {
 	#define NULL 0
 	#endif
 
-	template<typename E> linkedlist<E>::linkedlistnode::linkedlistnode(E data,linkedlistnode* next) {
+	template<typename E> linkedlist<E>::linkedlistnode::linkedlistnode(const E& data,linkedlistnode* next) {
 		this->data = data;
 		this->next = next;
 		this->prev = NULL;
 	}
-	template<typename E> linkedlist<E>::linkedlistnode::linkedlistnode(linkedlistnode* prev,E data,linkedlistnode* next) {
+	template<typename E> linkedlist<E>::linkedlistnode::linkedlistnode(linkedlistnode* prev,const E& data,linkedlistnode* next) {
 		this->data = data;
 		this->next = next;
 		this->prev = prev;
@@ -77,7 +77,7 @@ namespace data {
 		this->first = NULL;
 		this->last = NULL;
 	}
-	template <typename T> linkedlist<T>::linkedlist(T first) {
+	template <typename T> linkedlist<T>::linkedlist(const T& first) {
 		this->count = 1;
 		this->first = new linkedlistnode(first);
 		this->last = this->first;
@@ -100,14 +100,14 @@ namespace data {
 			this->last = NULL;
 		}
 	}
-	template <typename T> linkedlist<T>::linkedlist(const linkedlist<T> &original) {
+	template <typename T> linkedlist<T>::linkedlist(const linkedlist<T>& original) {
 		count = 0;
 		iterator end = original.end();
 		for(iterator it = original.begin(); it != end; ++it) {
 			push_back(*it);
 		}
 	}
-	template <typename T> linkedlist<T>& linkedlist<T>::operator= (const linkedlist<T> &original) {
+	template <typename T> linkedlist<T>& linkedlist<T>::operator= (const linkedlist<T>& original) {
 		count  = 0;
 		iterator end = original.end();
 		for(iterator it = original.begin(); it != end; ++it) {
@@ -127,7 +127,7 @@ namespace data {
 	template <typename T> T& linkedlist<T>::back() {
 		return this->last->data;
 	}
-	template <typename T> void linkedlist<T>::push_back(T elem) {
+	template <typename T> void linkedlist<T>::push_back(const T& elem) {
 		linkedlistnode* pushed = new linkedlistnode(this->last,elem);
 		if(this->count)
 		{
@@ -139,7 +139,7 @@ namespace data {
 		}
 		this->count++;
 	}
-	template <typename T> void linkedlist<T>::push_front(T elem) {
+	template <typename T> void linkedlist<T>::push_front(const T& elem) {
 		linkedlistnode* pushed = new linkedlistnode(elem,this->first);
 		if(this->count)
 		{
@@ -171,7 +171,7 @@ namespace data {
 			return current->data;
 		}
 	}
-	template <typename T> T linkedlist<T>::pop_back() {
+	template <typename T> T& linkedlist<T>::pop_back() {
 		linkedlistnode* popped = this->last;
 		this->last = popped->prev;
 		if (this->last == NULL)
@@ -187,7 +187,7 @@ namespace data {
 		delete popped;
 		return data;
 	}
-	template <typename T> T linkedlist<T>::pop_front() {
+	template <typename T> T& linkedlist<T>::pop_front() {
 		linkedlistnode* popped = this->first;
 		this->first = popped->next;
 		if (this->first == NULL)
