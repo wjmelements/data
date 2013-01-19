@@ -27,9 +27,9 @@ namespace data {
 		void add(T elem); // O(log n)
 		void remove(T elem); // O(log n)
 		bool contains(T elem); // O(log n)
-        #ifdef DEBUG
-        void sanityCheck();
-        #endif
+		#ifdef DEBUG
+		void sanityCheck();
+		#endif
 	};
 
 	template <typename K, typename V>
@@ -50,9 +50,9 @@ namespace data {
 		void put(K key, V value); // O(log n)
 		V get(K key); // O(log n)
 		void remove(K key); // O(log n)
-        #ifdef DEBUG
-        void sanityCheck();
-        #endif
+		#ifdef DEBUG
+		void sanityCheck();
+		#endif
 
 	};
 
@@ -79,9 +79,9 @@ namespace data {
 		splaytreenode<T>* insert(T elem); // O(log n)
 		splaytreenode<T>* remove(T elem); // O(log n)
 		splaytreenode<T>* splay(); // O(log n)
-        #ifdef DEBUG
-        void sanityCheck(bool isRoot = true);
-        #endif
+		#ifdef DEBUG
+		void sanityCheck(bool isRoot = true);
+		#endif
 
 	};
 
@@ -153,12 +153,12 @@ namespace data {
 	}
 
 	template <typename T> splaytreenode<T>* splaytreenode<T>::zigzagleft() {
-            right->zigright();
+		right->zigright();
 		return zigleft();
 	}
 
 	template <typename T> splaytreenode<T>* splaytreenode<T>::zigzagright() {
-            left->zigleft();
+		left->zigleft();
 		return zigright();
 	}
 
@@ -302,46 +302,46 @@ namespace data {
 		}
 	}
 
-      template <typename T> splaytreenode<T>* splaytreenode<T>::remove(T elem) {
-            splaytreenode<T>* loc = find(elem);
-            if (loc == NULL) {
-                  return this;
-            }
-            loc->splay();
-            splaytreenode<T>* rightsub = loc->right;
-            splaytreenode<T>* leftsub = loc->left;
-            if (leftsub == NULL) {
-                  if (rightsub != NULL) {
-                        rightsub->up = NULL;
-                  }
-                  return rightsub;
-            }
-            leftsub->up = NULL;
-            splaytreenode<T>* root = leftsub;
-            while (root->right != NULL) {
-                  root = root->right;
-            }
-            root->splay();
-            if (rightsub != NULL) {
-                  root->right = rightsub;
-                  rightsub->up = root;
-            }
-            return root;
-      }
+	template <typename T> splaytreenode<T>* splaytreenode<T>::remove(T elem) {
+		splaytreenode<T>* loc = find(elem);
+		if (loc == NULL) {
+			return this;
+		}
+		loc->splay();
+		splaytreenode<T>* rightsub = loc->right;
+		splaytreenode<T>* leftsub = loc->left;
+		if (leftsub == NULL) {
+			if (rightsub != NULL) {
+				rightsub->up = NULL;
+			}
+			return rightsub;
+		}
+		leftsub->up = NULL;
+		splaytreenode<T>* root = leftsub;
+		while (root->right != NULL) {
+			root = root->right;
+		}
+		root->splay();
+		if (rightsub != NULL) {
+			root->right = rightsub;
+			rightsub->up = root;
+		}
+		return root;
+	}
 
-      template <typename K, typename V> void splaymap<K,V>::remove(K key) {
-            if (root != NULL) {
-                  tuple elem;
-                  elem.key = key;
-                  root = root->remove(elem);
-            }
-      }
+	template <typename K, typename V> void splaymap<K,V>::remove(K key) {
+		if (root != NULL) {
+			tuple elem;
+			elem.key = key;
+			root = root->remove(elem);
+		}
+	}
 
-      template <typename T> void splayset<T>::remove(T elem) {
-            if (root != NULL) {
-                  root = root->remove(elem);
-            }
-      }
+	template <typename T> void splayset<T>::remove(T elem) {
+		if (root != NULL) {
+			root = root->remove(elem);
+		}
+	}
 
 	template <typename K, typename V> bool splaymap<K,V>::tuple::operator== (tuple& other) {
 		return key == other.key;
@@ -414,7 +414,7 @@ namespace data {
 		return NULL;
 		
 	}
-    #ifdef DEBUG
+	#ifdef DEBUG
 	template <typename K, typename V> void splaymap<K,V>::sanityCheck() {
 		root->sanityCheck(true);
 	}
@@ -423,7 +423,7 @@ namespace data {
 		root->sanityCheck(true);
 	}
 
-    template <typename T> void splaytreenode<T>::sanityCheck(bool isRoot) {
+	template <typename T> void splaytreenode<T>::sanityCheck(bool isRoot) {
 		if (isRoot xor up == NULL) {
 			if (isRoot) {
 				cout << "Root has an up pointer that isn't NULL" << endl;
@@ -432,13 +432,13 @@ namespace data {
 				cout << "Non-root node has a NULL up pointer" << endl;
 			}
 		}
-        if (left) {
-            left->sanityCheck(false);
-        }
-        if (right) {
-            right->sanityCheck(false);
-        }
-    }
-    #endif
+		if (left) {
+			left->sanityCheck(false);
+		}
+		if (right) {
+			right->sanityCheck(false);
+		}
+	}
+	#endif
 }
 #endif
