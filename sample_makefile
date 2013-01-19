@@ -4,5 +4,6 @@ debug:
 	g++ -D DEBUG -Wall test.cpp -o test
 clean:
 	rm test
+	git gc
 run:
 	./test
