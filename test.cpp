@@ -4,6 +4,7 @@
 #include "bogo.h"
 #include "avl.h"
 #include "util.h"
+#include "beap.h"
 #include <cstddef>
 #include <iostream>
 using namespace std;
@@ -14,6 +15,7 @@ using data::splaymap;
 using data::bogoweb;
 using data::avlset;
 using data::avlmap;
+using data::beap;
 using data::mergesort;
 int main() {
 
@@ -304,6 +306,32 @@ int main() {
       else {
             cout << "Fail";
       }
+	cout << "\n\n== Beap ==";
+	test = true;
+	beap<size_t> bigNums;
+	for (size_t i = 100; i > 88; --i) {
+		bigNums.insert(i);
+	}
+	cout << "\nInsert 12 values out of order and then count 12:\t";
+	if (bigNums.size() == 12) {
+		cout << "Pass";
+	}
+	else {
+		cout << "Fail";
+	}
+	cout << "\nThey pop in order:\t";
+	for (size_t i = 89; i < 101; ++i) {
+		if (bigNums.pop() != i) {
+			test = false;
+			cout << i;
+		}
+	}
+	if (test) {
+		cout << "Pass";
+	}
+	else {
+		cout << "Fail";
+	}
 	cout << "\n\n== Util ==";
 	int* array = new int[10];
 	for (size_t i = 0; i < 10; ++i) {

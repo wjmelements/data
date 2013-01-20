@@ -31,6 +31,8 @@ avlset -- Beta
 
 avlmap -- Beta
 
+beap -- Beta
+
 rbset
 
 rbmap
