@@ -31,9 +31,9 @@ namespace data {
 		size_t height(); // O(1)
 		bool empty(); // O(1)
 		void clear(); // O(n)
-			#ifdef DEBUG
-			void sanityCheck();
-			#endif
+		#ifdef DEBUG
+		void sanityCheck();
+		#endif
 	};
 
 	template <typename K, typename V>

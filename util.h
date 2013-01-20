@@ -6,20 +6,20 @@
 
 namespace data {
 	// Conveniences
-      template <typename T> T max(T one, T two); // O(1)
-      template <typename T> T min(T one, T two); // O(1)
+	template <typename T> T max(T one, T two); // O(1)
+	template <typename T> T min(T one, T two); // O(1)
 	// Sorts
 	template <typename T> T* mergesort(T* start, size_t size); // O(n^2)
 	template <typename T> T* radixsort(T* start, size_t size); // O(sizeof(T) n)
 	template <typename T> T* triesort(T* start, size_t size); // O(sizeof(T) n)
 	template <typename T> T* heapsort(T* start, size_t size); // O(n log n)
 
-      template <typename T> T max(T one, T two) {
-            return one > two ? one : two;
-      }
-      template <typename T> T min(T one, T two) {
-            return one < two ? one: two;
-      }
+	template <typename T> T max(T one, T two) {
+		return one > two ? one : two;
+	}
+	template <typename T> T min(T one, T two) {
+		return one < two ? one: two;
+	}
 	template <typename T> T* mergesort(T* start, size_t size) {
 		if (size < 2) {
 			return start;
