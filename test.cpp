@@ -157,21 +157,21 @@ int main() {
 	else {
 		cout << "Fail";
 	}
-      cout << "\nRemove all 10 values:\t";
-      bool ssrtest = true;
-      for (unsigned int i = 9; i < 10; --i) {
-            digits.remove(i);
-            if (digits.contains(i)) {
-                  cout << i << ' ';
-                  ssrtest = false;
-            }
-      }
-      if (ssrtest) {
-            cout << "Pass";
-      }
-      else {
-            cout << "Fail";
-      }
+	cout << "\nRemove all 10 values:\t";
+	bool ssrtest = true;
+	for (unsigned int i = 9; i < 10; --i) {
+		digits.remove(i);
+		if (digits.contains(i)) {
+			cout << i << ' ';
+			ssrtest = false;
+		}
+	}
+	if (ssrtest) {
+		cout << "Pass";
+	}
+	else {
+		cout << "Fail";
+	}
 	cout << '\n';
 	cout << "\n== Splay Map ==";
 	splaymap<unsigned char,unsigned int> charstodigits;
@@ -206,41 +206,41 @@ int main() {
 		cout << "Fail";
 	}
 	cout << "\nRemove ten values:\t";
-      bool smrtest = true;
-      for (char i = '0'; i <= '9'; ++i) {
-            charstodigits.remove(i);
-            if (charstodigits.get(i) != NULL) {
-                  smrtest = false;
-                  cout << i << ' ';
-            }
-      }
-      if (smrtest) {
-            cout << "Pass";
-      }
-      else {
-            cout << "Fail";
-      }
-      cout << "\n\n== Bogoweb ==";
-      bogoweb<unsigned int> twoDigitNumbers;
-      cout << "\nInsert 100 elements:\t";
-      for (unsigned int i = 0; i < 100; ++i) {
-            twoDigitNumbers.insert(i);
-      }
-      cout << "Pass";
-      cout << "\nContains all of those elements:\t";
-      bool bwctest = true;
-      for (unsigned int i = 0; i < 100; ++i) {
-            if (!twoDigitNumbers.contains(i)) {
-                  cout << i << endl;
-                  bwctest = false;
-            }
-      }
-      if (bwctest) {
-            cout << "Pass";
-      }
-      else {
-            cout << "Fail";
-      }
+	bool smrtest = true;
+	for (char i = '0'; i <= '9'; ++i) {
+		charstodigits.remove(i);
+		if (charstodigits.get(i) != NULL) {
+			smrtest = false;
+			cout << i << ' ';
+		}
+	}
+	if (smrtest) {
+		cout << "Pass";
+	}
+	else {
+		cout << "Fail";
+	}
+	cout << "\n\n== Bogoweb ==";
+	bogoweb<unsigned int> twoDigitNumbers;
+	cout << "\nInsert 100 elements:\t";
+	for (unsigned int i = 0; i < 100; ++i) {
+		twoDigitNumbers.insert(i);
+	}
+	cout << "Pass";
+	cout << "\nContains all of those elements:\t";
+	bool bwctest = true;
+	for (unsigned int i = 0; i < 100; ++i) {
+		if (!twoDigitNumbers.contains(i)) {
+			cout << i << endl;
+			bwctest = false;
+		}
+	}
+	if (bwctest) {
+		cout << "Pass";
+	}
+	else {
+		cout << "Fail";
+	}
 	cout << "\nDoes not contain other elements:\t";
 	bwctest = true;
 	for (unsigned int i = 100; i < 200; ++i) {
@@ -255,26 +255,26 @@ int main() {
 	else {
 		cout << "Fail";
 	}
-      cout << "\n\n== AVL Set ==";
-      avlset<char> hexChars;
-      for (char letter = 'A'; letter <= 'F'; ++letter) {
-            hexChars.add(letter);
-      }
-      bool avlstest = true;
-      cout << "\nAdds 6 values and contains them:\t";
-      for (char letter = 'A'; letter <= 'F'; ++letter) {
-            if(!hexChars.contains(letter)) {
-                  cout << letter;
-                  avlstest = false;
-            }
-      }
-      if (avlstest) {
-            cout << "Pass";
-      }
-      else {
-            cout << "Fail";
-      }
-      bool test = true;
+	cout << "\n\n== AVL Set ==";
+	avlset<char> hexChars;
+	for (char letter = 'A'; letter <= 'F'; ++letter) {
+		hexChars.add(letter);
+	}
+	bool avlstest = true;
+	cout << "\nAdds 6 values and contains them:\t";
+	for (char letter = 'A'; letter <= 'F'; ++letter) {
+		if(!hexChars.contains(letter)) {
+			cout << letter;
+			avlstest = false;
+		}
+	}
+	if (avlstest) {
+		cout << "Pass";
+	}
+	else {
+		cout << "Fail";
+	}
+	bool test = true;
 	for (char letter = 'A'; letter <= 'F'; ++letter) {
 		hexChars.remove(letter);
 		if (hexChars.contains(letter)) {
@@ -289,24 +289,24 @@ int main() {
 	else {
 		cout << "Fail";
 	}
-      cout << "\n\n== AVL Map ==";
-      avlmap<char,unsigned int> offsetMap;
-      for (char i = 0; i < 16; ++i) {
-            offsetMap.put(i,(unsigned int)i + 48);
-      }
-      test = true;
-      for (char i = 0; i < 16; ++i) {
-            if (offsetMap.get(i) != (unsigned int) i + 48) {
-                  test = false;
-            }
-      }
-      cout << "\nContains all 16 values inserted:\t";
-      if (test) {
-            cout << "Pass";
-      }
-      else {
-            cout << "Fail";
-      }
+	cout << "\n\n== AVL Map ==";
+	avlmap<char,unsigned int> offsetMap;
+	for (char i = 0; i < 16; ++i) {
+		offsetMap.put(i,(unsigned int)i + 48);
+	}
+	test = true;
+	for (char i = 0; i < 16; ++i) {
+		if (offsetMap.get(i) != (unsigned int) i + 48) {
+			test = false;
+		}
+	}
+	cout << "\nContains all 16 values inserted:\t";
+	if (test) {
+		cout << "Pass";
+	}
+	else {
+		cout << "Fail";
+	}
 	cout << "\n\n== Beap ==";
 	test = true;
 	beap<size_t> bigNums;
@@ -371,6 +371,6 @@ int main() {
 	else {
 		cout << "Fail";
 	}
-      cout << '\n' << endl;
+	cout << '\n' << endl;
 	return 0;
 }
