@@ -19,6 +19,7 @@ namespace data {
 		beap(); // O(1)
 		beap(const T& elem); // O(1)
 		beap(T* array, size_t count); // O(n log n)
+		~beap();
 		void insert(const T& elem); // O(log n)
 		T pop(); // O(log n)
 		size_t size(); // O(1)
@@ -48,6 +49,10 @@ namespace data {
 		for (size_t index = 0; index < starting_count; ++index) {
 			insert(array[index]);
 		}
+	}
+
+	template <typename T> beap<T>::~beap() {
+		delete[] data;
 	}
 
 	template <typename T> void beap<T>::doubleSize() {
@@ -101,7 +106,7 @@ namespace data {
 
 	template <typename T> void beap<T>::clear() {
 		count = 0;
-		delete data;
+		delete[] data;
 		maxSize = defaultSize;
 		data = new T[maxSize];
 	}

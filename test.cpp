@@ -17,6 +17,7 @@ using data::avlset;
 using data::avlmap;
 using data::beap;
 using data::mergesort;
+using data::heapsort;
 int main() {
 
 	cout << "== Linked List ==\n";
@@ -338,7 +339,25 @@ int main() {
 		array[i] = 9 - i;
 	}
 	cout << "\nMergesort:\t";
-	array = mergesort(array,10);
+	mergesort(array,10);
+	test = true;
+	for (size_t i = 0; i < 10; ++i) {
+		if (array[i] != i) {
+			cout << i;
+			test = false;
+		}
+	}
+	if (test) {
+		cout << "Pass";
+	}
+	else {
+		cout << "Fail";
+	}
+	cout << "\nHeapsort:\t";
+	for (size_t i = 0; i < 10; ++i) {
+		array[i] = 9 - i;
+	}
+	heapsort(array,10);
 	test = true;
 	for (size_t i = 0; i < 10; ++i) {
 		if (array[i] != i) {

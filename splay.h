@@ -21,6 +21,7 @@ namespace data {
 		splaytreenode<T>* root;
 	public:
 		splayset();
+		~splayset(); // O(n)
 		size_t size(); // O(n)
 		bool empty(); // O(1)
 		void clear(); // O(n)
@@ -44,6 +45,7 @@ namespace data {
 		splaytreenode<tuple>* root;
 	public:
 		splaymap();
+		~splaymap(); // O(n)
 		size_t size(); // O(n)
 		bool empty(); // O(1)
 		void clear(); // O(n)
@@ -74,6 +76,7 @@ namespace data {
 		T data;
 
 		splaytreenode(T elem); // O(1)
+		~splaytreenode(); // O(1)
 		size_t size(); // O(n)
 		splaytreenode<T>* find(T elem); // O(log n)
 		splaytreenode<T>* insert(T elem); // O(log n)
@@ -97,6 +100,11 @@ namespace data {
 		left = NULL;
 		right = NULL;
 		up = parent;
+	}
+
+	template <typename T> splaytreenode<T>::~splaytreenode() {
+		delete left;
+		delete right;
 	}
 
 	template <typename T> size_t splaytreenode<T>::size() {
@@ -249,6 +257,10 @@ namespace data {
 		root = NULL;
 	}
 
+	template <typename T> splayset<T>::~splayset() {
+		delete root;
+	}
+
 	template <typename T> size_t splayset<T>::size() {
 		if (root == NULL) {
 			return 0;
@@ -353,6 +365,10 @@ namespace data {
 
 	template <typename K,typename V> splaymap<K,V>::splaymap() {
 		root = NULL;
+	}
+
+	template <typename K, typename V> splaymap<K,V>::~splaymap() {
+		delete root;
 	}
 
 	template <typename K,typename V> size_t splaymap<K,V>::size() {

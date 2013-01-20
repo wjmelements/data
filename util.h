@@ -2,6 +2,7 @@
 #define util_w
 
 #include<cstddef>
+#include "beap.h"
 
 namespace data {
 	// Conveniences
@@ -11,12 +12,13 @@ namespace data {
 	template <typename T> T* mergesort(T* start, size_t size); // O(n^2)
 	template <typename T> T* radixsort(T* start, size_t size); // O(sizeof(T) n)
 	template <typename T> T* triesort(T* start, size_t size); // O(sizeof(T) n)
+	template <typename T> T* heapsort(T* start, size_t size); // O(n log n)
 
       template <typename T> T max(T one, T two) {
-            return one > two? one : two;
+            return one > two ? one : two;
       }
       template <typename T> T min(T one, T two) {
-            return one < two? one: two;
+            return one < two ? one: two;
       }
 	template <typename T> T* mergesort(T* start, size_t size) {
 		if (size < 2) {
@@ -51,6 +53,17 @@ namespace data {
 		}
 		delete smaller;
 		delete larger;
+		return start;
+	}
+
+	template <typename T> T* heapsort(T* start, size_t size) {
+		beap<T> heap;
+		for (size_t i = 0; i < size; ++i) {
+			heap.insert(start[i]);
+		}
+		for (size_t i = 0; i < size; ++i) {
+			start[i] = heap.pop();
+		}
 		return start;
 	}
 }
