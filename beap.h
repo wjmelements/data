@@ -16,13 +16,13 @@ namespace data {
 		void doubleSize();
 		static const size_t defaultSize = 4;
 	public:
-		beap();
-		beap(const T& elem);
-		beap(T* array, size_t count);
-		void insert(const T& elem);
-		T pop();
-		size_t size();
-		void clear();
+		beap(); // O(1)
+		beap(const T& elem); // O(1)
+		beap(T* array, size_t count); // O(n log n)
+		void insert(const T& elem); // O(log n)
+		T pop(); // O(log n)
+		size_t size(); // O(1)
+		void clear(); // O(n)
 	};
 
 	template <typename T> beap<T>::beap() {
@@ -71,6 +71,9 @@ namespace data {
 	}
 
 	template <typename T> T beap<T>::pop() {
+		if (count == 0) {
+			return NULL;
+		}
 		size_t current = 1;
 		size_t left = 2;
 		size_t right = 3;
