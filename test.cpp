@@ -7,7 +7,9 @@
 #include "beap.h"
 #include <cstddef>
 #include <iostream>
-using namespace std;
+using std::cout;
+using std::endl;
+using std::string;
 using data::linkedlist;
 using data::trie;
 using data::splayset;
@@ -18,6 +20,8 @@ using data::avlmap;
 using data::beap;
 using data::mergesort;
 using data::heapsort;
+using data::priorityq;
+using data::randomData;
 int main() {
 
 	cout << "== Linked List ==\n";
@@ -74,10 +78,14 @@ int main() {
 		cout << alpha2.pop_back();
 	}
 	cout << endl;
-	for (linkedlist<char>::iterator it = alpha.rbegin(); it != alpha.rend(); it++) {
+	for (linkedlist<char>::iterator it = alpha.rbegin(); it != alpha.rend(); ++it) {
 		cout << *it;
 	}
 	cout << endl;
+	alpha.reverse();
+	for (linkedlist<char>::iterator it = alpha.begin(); it != alpha.end(); ++it) {
+		cout << *it;
+	}
 	alpha.clear();
 	cout << "\n== Trie ==\n";
 	trie<string> dict;
@@ -333,6 +341,19 @@ int main() {
 	else {
 		cout << "Fail";
 	}
+	cout << "\n\n== Priority Queue ==";
+	test = true;
+	priorityq<size_t,char> ruins;
+	cout << "\nInsert 26 values in random order and count 26:\t";
+	for (char i = 'A'; i <= 'Z'; ++i) {
+		ruins.insert(randomData<size_t>(),i);
+	}
+	if (ruins.size() == 26) {
+		cout << "Pass";
+	}
+	else {
+		cout << "Fail";
+	}
 	cout << "\n\n== Util ==";
 	int* array = new int[10];
 	for (size_t i = 0; i < 10; ++i) {
@@ -371,6 +392,14 @@ int main() {
 	else {
 		cout << "Fail";
 	}
-	cout << '\n' << endl;
+	cout << "\nRandomness:";
+	cout << "\n\tRandom ints:";
+	for (size_t i = 0; i < 5; ++i) {
+		cout << "\t" << randomData<int>();
+	}
+	cout << "\n\tRandom bools:";
+	for (size_t i = 0; i < 5; ++i) {
+		cout << "\t" << randomData<bool>();
+	}	cout << '\n' << endl;
 	return 0;
 }

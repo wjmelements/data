@@ -35,6 +35,7 @@ namespace data {
 		T pop_front(); // O(1)
 		bool empty(); // O(1)
 		void clear(); // O(n)
+		void reverse(); // O(n)
 		class iterator {
 		private:
 			bool forwards;
@@ -216,6 +217,17 @@ namespace data {
 			this->first = this->last = NULL;
 			count = 0;
 		}
+	}
+	template <typename T> void linkedlist<T>::reverse() {
+		linkedlistnode* iter = this->first;
+		while (iter) {
+			linkedlistnode* temp = iter->next;
+			iter->next = iter->prev;
+			iter = iter->prev = temp;
+		}
+		iter = this->first;
+		this->first = this->last;
+		this->last = iter;
 	}
 	template <typename T> linkedlist<T>::iterator::iterator() {
 		forwards = true;

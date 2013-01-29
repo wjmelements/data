@@ -22,8 +22,27 @@ namespace data {
 		~beap();
 		void insert(const T& elem); // O(log n)
 		T pop(); // O(log n)
-		size_t size(); // O(1)
+		size_t size() const; // O(1)
 		void clear(); // O(n)
+	};
+
+	template <typename P,typename T>
+	class priorityq {
+	private:
+		struct tuple {
+			P priority;
+			T data;
+			bool operator< (const tuple& other) const;
+		};
+		beap<tuple>* data;
+	public:	
+		priorityq();
+		priorityq(P* priorities, T* elements, size_t count);
+		~priorityq();
+		void insert(P priority, T data);
+		T pop();
+		size_t size() const;
+		void clear();
 	};
 
 	template <typename T> beap<T>::beap() {
@@ -67,7 +86,7 @@ namespace data {
 		}
 		size_t current = count >> 1;
 		size_t last = count;
-		while (data[current] > elem && current) {
+		while (elem < data[current] && current) {
 			data[last] = data[current];
 			last = current;
 			current >>= 1;
@@ -100,7 +119,7 @@ namespace data {
 		return popped;
 	}
 
-	template <typename T> size_t beap<T>::size() {
+	template <typename T> size_t beap<T>::size() const {
 		return count;
 	}
 
@@ -109,6 +128,41 @@ namespace data {
 		delete[] data;
 		maxSize = defaultSize;
 		data = new T[maxSize];
+	}
+
+	template <typename P, typename T> priorityq<P,T>::priorityq() {
+		data = new beap<tuple>();
+	}
+	template <typename P, typename T> priorityq<P,T>::priorityq(P* priorities, T* elements, size_t count) {
+		data = new beap<tuple>();
+		for (size_t i = 0; i < count; ++i) {
+			tuple pair;
+			pair.priority = priorities[i];
+			pair.data = elements[i];
+			data->insert(pair);
+		}
+	}
+	template <typename P, typename T> priorityq<P,T>::~priorityq() {
+		delete data;
+	}
+	template <typename P, typename T> void priorityq<P,T>::insert(P priority, T value) {
+		tuple pair;
+		pair.priority = priority;
+		pair.data = value;
+		data->insert(pair);
+	}
+	template <typename P, typename T> T priorityq<P,T>::pop() {
+		return data->pop().data;
+	}
+	template <typename P, typename T> size_t priorityq<P,T>::size() const {
+		return data->size();
+	}
+	template <typename P, typename T> void priorityq<P,T>::clear() {
+		data->clear();
+	}
+
+	template <typename P, typename T> bool priorityq<P,T>::tuple::operator< (const tuple& other) const {
+		return priority < other.priority;
 	}
 
 } // namespace data

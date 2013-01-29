@@ -7,7 +7,7 @@ The definition and implementation of templates are in the same file. Definitions
 
 == Key ==
 
-datastructure -- Condition
+feature -- Condition
 
 Conditions:
 
@@ -15,7 +15,7 @@ Alpha - partially functional and in development
 
 Beta - very functional but requires testing and refining
 
-== List ==
+== Data Structures ==
 
 linkedlist -- Beta
 
@@ -33,6 +33,8 @@ avlmap -- Beta
 
 beap -- Beta
 
+priorityq -- Beta
+
 rbset
 
 rbmap
@@ -40,3 +42,23 @@ rbmap
 tangoset
 
 tangomap
+
+== Algorithms ==
+
+max -- Beta
+
+min -- Beta
+
+randomData -- Beta
+
+mergesort -- Beta
+
+heapsort -- Beta
+
+heapshuffle -- Beta
+
+mergeshuffle -- Beta
+
+triesort
+
+radixsort
