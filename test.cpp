@@ -133,7 +133,23 @@ int main() {
 	else {
 		cout << "Pass" << endl;
 	}
-	cout << "\n== Splay Set ==\n";
+	cout << "hasAll:\t";
+	char* theLetters = new char[5];
+	theLetters[0] = 'a';
+	theLetters[1] = 'b';
+	theLetters[2] = 'c';
+	bool thA = lett.hasAll(theLetters,0); // true
+	bool thB = lett.hasAll(theLetters,1); // false
+	lett.put('a');
+	lett.put('b');
+	bool thC = lett.hasAll(theLetters,2); // true
+	if (thA && thC && !thB) {
+		cout << "Pass";
+	}
+	else {
+		cout << "Fail" << thA << thB << thC;
+	}
+	cout << "\n\n== Splay Set ==\n";
 	splayset<unsigned int> digits;
 	cout << "Constructed with size zero:\t";
 	if (digits.size() == 0) {

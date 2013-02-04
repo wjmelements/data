@@ -4,13 +4,13 @@
 #include <cstddef>
 #include <string>
 
-#ifndef NULL
-#define NULL 0
+#ifdef PARA
+#include <pthread.h>
 #endif
 
 namespace data {
 	/*
-		implemented types:
+		supported types:
 		string
 		(un)signed long long
 		(un)signed long
@@ -23,11 +23,20 @@ namespace data {
 	private:
 		trie<T>** children;
 		bool termination;
+		#ifdef PARA
+		static void* pthreadHas(void*);
+		struct pthreadParam {
+			trie<T>* root;
+			T* elem;
+		};
+		#endif
+
 	public:
 		trie(); // O(sizeof(T))
 		void put(const T); // O(sizeof(T))
 		void remove(const T); // O(sizeof(T))
-		bool has(const T); // O(sizeof(T))
+		bool has(const T) const; // O(sizeof(T))
+		bool hasAll(T*, size_t size) const; // O(sizeof(T) E) ^ O(sizeof(T))
 		size_t count();
 		class iterator {
 		private:
@@ -51,6 +60,10 @@ namespace data {
 		iterator inorder();
 		iterator reverseorder();
 	};
+
+	#ifndef NULL
+	#define NULL 0
+	#endif
 
 	template <typename T> typename trie<T>::iterator& trie<T>::iterator::operator= (const iterator &original) {
 		forwards = original.forwards;
@@ -87,7 +100,7 @@ namespace data {
 			}
 		}
 	}
-	template<typename T> bool trie<T>::has(const T t) {
+	template<typename T> bool trie<T>::has(const T t) const {
 		if(t == 0) {
 			return termination;
 		}
@@ -99,6 +112,40 @@ namespace data {
 			}
 			return children[first]->has(remains);
 		}
+	}
+	#ifdef PARA
+	template<typename T> static void* trie<T>::pthreadHas(void* data) {
+		pthreadParam* param = data;
+		return (void*) param->root->has(*(param->elem));
+	}
+	#endif
+	template<typename T> bool trie<T>::hasAll(T* elements, size_t count) const {
+		#ifdef PARA
+		bool res = true;
+		pthread_t* threadIDs = new pthread_t[count];
+		pthreadParam* params = new pthreadParam[count];
+		for (size_t i = 0; i < count; ++i) {
+			params[i].root = this;
+			params[i].elem = &elements[i];
+			pthread_create(&threadIDs[i],NULL,(void* (*) (void*))&(this->pthreadHas),&params[i]);
+		}
+		for (size_t i = 0; i < count; ++i) {
+			pthread_join(threadIDs[i],(void**)&res);
+			if (!res) {
+				// consider canceling the other threads
+				delete threadIDs;
+				return false;
+			}
+		}
+		delete threadIDs;
+		#else
+		for (size_t i = 0; i < count; ++i) {
+			if (!has(elements[i])) {
+				return false;
+			}
+		}
+		#endif
+		return true;
 	}
 	template<typename T> void trie<T>::put(const T t) {
 		if(t == 0) {
@@ -144,7 +191,7 @@ namespace data {
 			children[first]->put(remains);
 		}
 	}
-	template <> bool trie<string>::has(const string str) {
+	template <> bool trie<string>::has(const string str) const {
 		if(str.size() == 0) {
 			return termination;
 		}

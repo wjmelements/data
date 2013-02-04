@@ -1,5 +1,7 @@
 all:
 	g++ -O3 test.cpp -o test
+para:
+	g++ -O3 -D PARA test.cpp -pthread -fpermissive -o test
 debug:
 	g++ -D DEBUG -Wall test.cpp -o test
 clean:
