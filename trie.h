@@ -114,7 +114,7 @@ namespace data {
 		}
 	}
 	#ifdef PARA
-	template<typename T> static void* trie<T>::pthreadHas(void* data) {
+	template<typename T> void* trie<T>::pthreadHas(void* data) {
 		pthreadParam* param = data;
 		return (void*) param->root->has(*(param->elem));
 	}
