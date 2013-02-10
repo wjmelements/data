@@ -22,41 +22,57 @@ using data::mergesort;
 using data::heapsort;
 using data::priorityq;
 using data::randomData;
+
+template<typename T> void test(string description, T value, T expected) {
+	cout << description << ":\t" << (value == expected ? "Pass" : "Fail") << endl;
+}
+template <> void test(string description, string value, string expected) {
+	cout << description << ":\t" << (value.compare(expected) == 0 ? "Pass" : "Fail") << endl;
+}
+template <typename P> void testArray(string description, P ptr, P other, size_t size, int step = 1) {
+	cout << description << ":\t";
+	for (size_t i = 0; i < size; ++i) {
+		int index = i * step;
+		if (ptr[i] !=  other[index]) {
+			cout << "Fail" << endl;
+			return; // May be better with goto, but this is a testing program that should be easy to follow
+		}
+	}
+	cout << "Pass" << endl;
+}
+
 int main() {
 
 	cout << "== Linked List ==\n";
 	int six = 6;
 	linkedlist<linkedlist<int> > temp;
 	linkedlist<int> sicks(six);
-	if(sicks.at(0) != 6) {
-		cout << "Single element list creation: Fail" << endl;
-	}
+	test("Single element list creation",sicks.at(0),6);
 	size_t size = 26;
 	char* alphabet = new char[size];
+	char* alphatest = new char[size];
 	linkedlist<char> alpha2;
 	for(size_t letter = 0; letter < size; letter++)
 	{
 		alphabet[letter] = 'a' + letter;
 		alpha2.push_back(alphabet[letter]);
-		cout << alphabet[letter];
 	}
-	cout << "\nThe following should be the above.";
 	linkedlist<char> alpha(alphabet,size);
-	cout << "\n";
 	for(size_t index = 0; index < size; index++)
 	{
-		cout << alpha.at(index);
+		alphatest[index] = alpha.at(index);
 	}
-	cout << "\n";
+	testArray("Linked list created from array",alphabet,alphatest,size);
 	for(linkedlist<char>::iterator i = alpha.begin(); i != alpha.end(); i++) {
-		cout << *i;
+		static size_t index = 0;
+		alphatest[index++] = *i;
 	}
-	cout << "\n";
+	testArray("Linked list iterator successfully iterates over the elements", alphabet, alphatest, size);
 	for(size_t index = 0; index < size; index++)
 	{
-		cout << alpha2.at(index);
+		alphatest[index] = alpha2.at(index);
 	}
-	cout << "\n";
+	testArray("Linked list at function works as intended", alphabet, alphatest, size);
 	linkedlist<char> alpha3;
 	for(size_t letter = 1; letter <= size; letter++)
 	{
@@ -64,140 +80,84 @@ int main() {
 	}
 	for(size_t index = 0; index < size; index++)
 	{
-		cout << alpha3.at(index);
+		alphatest[index] = alpha3.at(index);
 	}
-	cout << '\n';
+	testArray("Linked list push_front works as intended", alphabet, alphatest, size);
 	while(alpha3.size()) {
-		cout << alpha3.pop_front();
+		static size_t index = 0;
+		alphatest[index++] = alpha3.pop_front();
 	}
-	if(!alpha3.empty()) {
-		cout << "\nPopping all elements doesn't make list empty: Fail";
-	}
-	cout << "\nThe following should be the above backwards:\n";
+	test("Popping all elements makes list empty", alpha3.empty(), true);
+	testArray("Linked list pops elements from front correctly", alphabet, alphatest, size);
 	while(alpha2.size()) {
-		cout << alpha2.pop_back();
+		static size_t i = size;
+		alphatest[--i] = alpha2.pop_back();
 	}
-	cout << endl;
+	testArray("Linked list pops elements from back correctly", alphabet, alphatest, size);
 	for (linkedlist<char>::iterator it = alpha.rbegin(); it != alpha.rend(); ++it) {
-		cout << *it;
+		static size_t i = size;
+		alphatest[--i] = *it;
 	}
-	cout << endl;
+	testArray("Linked list reverse iterator works correctly", alphabet, alphatest, size);
 	alpha.reverse();
 	for (linkedlist<char>::iterator it = alpha.begin(); it != alpha.end(); ++it) {
-		cout << *it;
+		static size_t i = size;
+		alphatest[--i] = *it;
 	}
+	testArray("Linked list reverses correctly", alphabet, alphatest, size);
 	alpha.clear();
+	test("Clearing linked list makes size 0", alpha.size(), (size_t) 0);
 	cout << "\n== Trie ==\n";
 	trie<string> dict;
 	dict.put("hello world");
-	if (dict.has("hello world")) {
-		cout << "Pass" << endl;
-	}
-	else {
-		cout << "Fail" << endl;
-	}
+	test("String trie has what we put",dict.has("hello world"),true);
 	dict.remove("hello world");
-	if (dict.has("hello world")) {
-		cout << "Fail" << endl;
-	}
-	else {
-		cout << "Pass" << endl;
-	}
+	test("trie<string> no longer has what we remove", dict.has("hello world"),false);
 	trie<long long> phbook;
-	phbook.put(12334567);
-	if (phbook.has(12334567)) {
-		cout << "Pass" << endl;
-	}
-	else {
-		cout << "Fail" << endl;
-	}
+	phbook.put(1234567);
+	test("trie<long long> has what we put", phbook.has(1234567), true); 
 	phbook.remove(1234567);
-	if (phbook.has(1234567)) {
-		cout << "Fail" << endl;
-	}
-	else {
-		cout << "Pass" << endl;
-	}
+	test("trie<long long> no longer has what we remove", phbook.has(1234567), false);
 	trie<char> lett;
 	lett.put('a');
-	if (lett.has('a')) {
-		cout << "Pass" << endl;
-	}
-	else {
-		cout << "Fail" << endl;
-	}
+	test("trie<char> has what we put", lett.has('a'), true);
 	lett.remove('a');
-	if (lett.has('a')) {
-		cout << "Fail" << endl;
-	}
-	else {
-		cout << "Pass" << endl;
-	}
+	test("trie<char> no longer has what we remove", lett.has('a'), false);
 	cout << "hasAll:\t";
 	char* theLetters = new char[5];
 	theLetters[0] = 'a';
 	theLetters[1] = 'b';
 	theLetters[2] = 'c';
-	bool thA = lett.hasAll(theLetters,0); // true
-	bool thB = lett.hasAll(theLetters,1); // false
 	lett.put('a');
+	test("trie<char> hasAll of an empty array", lett.hasAll(theLetters,0), true);
 	lett.put('b');
-	bool thC = lett.hasAll(theLetters,2); // true
-	if (thA && thC && !thB) {
-		cout << "Pass";
-	}
-	else {
-		cout << "Fail" << thA << thB << thC;
-	}
+	test("trie<char> does not hasAll things it doesn't have", lett.hasAll(theLetters,3), false);
+	test("trie<char> hasAll things it does have", lett.hasAll(theLetters,2), true);
 	cout << "\n\n== Splay Set ==\n";
 	splayset<unsigned int> digits;
-	cout << "Constructed with size zero:\t";
-	if (digits.size() == 0) {
-		cout << "Pass";
-	}
-	else {
-		cout << "Fail";
-	}
-	cout << "\nAdded ten values and contains those values:\t";
+	test("Constructed with size zero", digits.size(), (size_t) 0);
+	cout << "\t";
 	for (unsigned int i = 0; i < 10; ++i) {
 		digits.add(i);
 	}
-	bool ssctest = true;
+	bool sstest = true;
 	for (unsigned int i = 0; i < 10; ++i) {
 		if (!digits.contains(i)) {
-			ssctest = false;
+			sstest = false;
 		}
 	}
-	if (ssctest) {
-		cout <<"Pass";
-	}
-	else {
-		cout <<"Fail";
-	}
-	cout << "\nNow has 10 values:\t";
-	if (digits.size() == 10) {
-		cout << "Pass";
-	}
-	else {
-		cout << "Fail";
-	}
+	test("Added ten values and contains those values", sstest, true);
+	test("Now has 10 values",digits.size(), (size_t) 10);
 	cout << "\nRemove all 10 values:\t";
-	bool ssrtest = true;
+	sstest = true;
 	for (unsigned int i = 9; i < 10; --i) {
 		digits.remove(i);
 		if (digits.contains(i)) {
-			cout << i << ' ';
-			ssrtest = false;
+			sstest = false;
 		}
 	}
-	if (ssrtest) {
-		cout << "Pass";
-	}
-	else {
-		cout << "Fail";
-	}
-	cout << '\n';
-	cout << "\n== Splay Map ==";
+	test("Does not contain values after removing them", sstest, true);
+	cout << "\n\n== Splay Map ==";
 	splaymap<unsigned char,unsigned int> charstodigits;
 	cout << "\nConstructed with size zero:\t";
 	if (charstodigits.size() == 0) {
@@ -414,7 +374,7 @@ int main() {
 		cout << "\t" << randomData<int>();
 	}
 	cout << "\n\tRandom bools:";
-	for (size_t i = 0; i < 5; ++i) {
+	for (size_t i = 0; i < 10; ++i) {
 		cout << "\t" << randomData<bool>();
 	}	cout << '\n' << endl;
 	return 0;

@@ -94,7 +94,7 @@ namespace data {
 		}
 		else {
 			T remains = t >> 4;
-			char first = t && 15;
+			char first = t & 15;
 			if (children[first] != NULL) {
 				children[first]->remove(remains);
 			}
@@ -106,7 +106,7 @@ namespace data {
 		}
 		else {
 			T remains = t >> 4;
-			char first = t && 15;
+			char first = t & 15;
 			if (children[first] == NULL) {
 				return false;
 			}
@@ -133,11 +133,12 @@ namespace data {
 			pthread_join(threadIDs[i],(void**)&res);
 			if (!res) {
 				// consider canceling the other threads
-				delete threadIDs;
+				delete[] threadIDs;
+				delete[] params;
 				return false;
 			}
 		}
-		delete threadIDs;
+		delete[] threadIDs;
 		#else
 		for (size_t i = 0; i < count; ++i) {
 			if (!has(elements[i])) {
@@ -153,7 +154,7 @@ namespace data {
 		}
 		else {
 			T remains = t >> 4;
-			char first = t && 15;
+			char first = t & 15;
 			if (children[first] == NULL) {
 				children[first] = new trie<T>;
 			}

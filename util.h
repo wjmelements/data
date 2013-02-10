@@ -26,14 +26,14 @@ namespace data {
 	template <typename T> T min(T one, T two) {
 		return one < two ? one: two;
 	}
-	template <typename T> void rseed(size_t seed) {
+	void rseed(size_t seed) {
 		srand(seed);
 	}
 	template <typename T> T randomData() {
 		T product;
 		char* data = (char*) &product;
 		for (size_t i = 0; i < sizeof(T); ++i) {
-			data[i] = (char) rand() & 255;
+			data[i] = (char) rand() & 0xFF;
 		}
 		return product;
 	}

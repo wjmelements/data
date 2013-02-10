@@ -39,6 +39,8 @@ rbset
 
 rbmap
 
+string
+
 tangoset
 
 tangomap
