@@ -1,9 +1,11 @@
+CC=g++
+CFLAGS=-O3
 all:
-	g++ -O3 test.cpp -o test
+	$(CC) $(CFLAGS) test.cpp -o test
 para:
-	g++ -O3 -D PARA test.cpp -pthread -fpermissive -o test
+	$(CC) $(CFLAGS) -D PARA test.cpp -pthread -fpermissive -o test
 debug:
-	g++ -D DEBUG -Wall test.cpp -o test
+	$(CC) -D DEBUG -Wall test.cpp -o test
 clean:
 	rm test
 	git gc
