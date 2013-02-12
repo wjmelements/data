@@ -41,9 +41,12 @@ template <typename P> void testArray(string description, P ptr, P other, size_t 
 	cout << "Pass" << endl;
 }
 
-int main() {
+void section(string title) {
+	cout << "\n\n== " << title << " ==\n";
+}
 
-	cout << "== Linked List ==\n";
+int main() {
+	section("Linked List");
 	int six = 6;
 	linkedlist<linkedlist<int> > temp;
 	linkedlist<int> sicks(six);
@@ -107,7 +110,7 @@ int main() {
 	testArray("Linked list reverses correctly", alphabet, alphatest, size);
 	alpha.clear();
 	test("Clearing linked list makes size 0", alpha.size(), (size_t) 0);
-	cout << "\n== Trie ==\n";
+	section("Trie");
 	trie<string> dict;
 	test("String trie returns true in new value put",dict.put("hello world"),true);
 	test("String trie has what we put",dict.has("hello world"),true);
@@ -137,11 +140,14 @@ int main() {
 	lett.put('b');
 	test("trie<char> does not hasAll things it doesn't have", lett.hasAll(theLetters,3), false);
 	test("trie<char> hasAll things it does have", lett.hasAll(theLetters,2), true);
+<<<<<<< HEAD
 	test("trie<char> counts its elements correctly", lett.size(), (size_t) 2);
 	cout << "\n\n== Splay Set ==\n";
+=======
+	section("Splay Set");
+>>>>>>> 27fad518b595c6b3a054e7a07b98de18738bf6f0
 	splayset<unsigned int> digits;
 	test("Constructed with size zero", digits.size(), (size_t) 0);
-	cout << "\t";
 	for (unsigned int i = 0; i < 10; ++i) {
 		digits.add(i);
 	}
@@ -153,7 +159,6 @@ int main() {
 	}
 	test("Added ten values and contains those values", sstest, true);
 	test("Now has 10 values",digits.size(), (size_t) 10);
-	cout << "\nRemove all 10 values:\t";
 	sstest = true;
 	for (unsigned int i = 9; i < 10; --i) {
 		digits.remove(i);
@@ -162,56 +167,32 @@ int main() {
 		}
 	}
 	test("Does not contain values after removing them", sstest, true);
-	cout << "\n\n== Splay Map ==";
+	section("Splay Map");
 	splaymap<unsigned char,unsigned int> charstodigits;
-	cout << "\nConstructed with size zero:\t";
-	if (charstodigits.size() == 0) {
-		cout << "Pass";
-	}
-	else {
-		cout << "Fail";
-	}
-	cout << "\nAdded ten values and contains them:\t";
+	test("Constructed with size zero", charstodigits.size(),(size_t)0);
 	for (unsigned int i = 0; i < 10; ++i) {
 		charstodigits.put((char)48 + i,i);
 	}
-	bool smctest = true;
+	bool smtest = true;
 	for (char i = '0'; i <= '9'; ++i) {
 		if (charstodigits.get(i) != i - 48) {
-			smctest = false;
+			smtest = false;
 		}
 	}
-	if (smctest) {
-		cout << "Pass";
-	}
-	else {
-		cout << "Fail";
-	}
-	cout << "\nNow has ten values:\t";
-	if (charstodigits.size() == 10) {
-		cout << "Pass";
-	}
-	else {
-		cout << "Fail";
-	}
-	cout << "\nRemove ten values:\t";
-	bool smrtest = true;
+	test("Added ten values and contains them",smtest,true);
+	test("Now has ten values",charstodigits.size(),(size_t)10);
+	smtest = true;
 	for (char i = '0'; i <= '9'; ++i) {
 		charstodigits.remove(i);
 		if (charstodigits.get(i) != NULL) {
-			smrtest = false;
+			smtest = false;
 			cout << i << ' ';
 		}
 	}
-	if (smrtest) {
-		cout << "Pass";
-	}
-	else {
-		cout << "Fail";
-	}
-	cout << "\n\n== Bogoweb ==";
+	test("Does not contain removed values",smtest,true);
+	section("Bogoweb");
 	bogoweb<unsigned int> twoDigitNumbers;
-	cout << "\nInsert 100 elements:\t";
+	cout << "Insert 100 elements:\t";
 	for (unsigned int i = 0; i < 100; ++i) {
 		twoDigitNumbers.insert(i);
 	}
@@ -244,13 +225,13 @@ int main() {
 	else {
 		cout << "Fail";
 	}
-	cout << "\n\n== AVL Set ==";
+	section("AVL Set");
 	avlset<char> hexChars;
 	for (char letter = 'A'; letter <= 'F'; ++letter) {
 		hexChars.add(letter);
 	}
 	bool avlstest = true;
-	cout << "\nAdds 6 values and contains them:\t";
+	cout << "Adds 6 values and contains them:\t";
 	for (char letter = 'A'; letter <= 'F'; ++letter) {
 		if(!hexChars.contains(letter)) {
 			cout << letter;
@@ -278,7 +259,7 @@ int main() {
 	else {
 		cout << "Fail";
 	}
-	cout << "\n\n== AVL Map ==";
+	section("AVL Map");
 	avlmap<char,unsigned int> offsetMap;
 	for (char i = 0; i < 16; ++i) {
 		offsetMap.put(i,(unsigned int)i + 48);
@@ -289,20 +270,20 @@ int main() {
 			test = false;
 		}
 	}
-	cout << "\nContains all 16 values inserted:\t";
+	cout << "Contains all 16 values inserted:\t";
 	if (test) {
 		cout << "Pass";
 	}
 	else {
 		cout << "Fail";
 	}
-	cout << "\n\n== Beap ==";
+	section("Beap");
 	test = true;
 	beap<size_t> bigNums;
 	for (size_t i = 100; i > 88; --i) {
 		bigNums.insert(i);
 	}
-	cout << "\nInsert 12 values out of order and then count 12:\t";
+	cout << "Insert 12 values out of order and then count 12:\t";
 	if (bigNums.size() == 12) {
 		cout << "Pass";
 	}
@@ -322,10 +303,10 @@ int main() {
 	else {
 		cout << "Fail";
 	}
-	cout << "\n\n== Priority Queue ==";
+	section("Priority Queue");
 	test = true;
 	priorityq<size_t,char> ruins;
-	cout << "\nInsert 26 values in random order and count 26:\t";
+	cout << "Insert 26 values in random order and count 26:\t";
 	for (char i = 'A'; i <= 'Z'; ++i) {
 		ruins.insert(randomData<size_t>(),i);
 	}
@@ -335,12 +316,12 @@ int main() {
 	else {
 		cout << "Fail";
 	}
-	cout << "\n\n== Util ==";
+	section("Util");
 	int* array = new int[10];
 	for (size_t i = 0; i < 10; ++i) {
 		array[i] = 9 - i;
 	}
-	cout << "\nMergesort:\t";
+	cout << "Mergesort:\t";
 	mergesort(array,10);
 	test = true;
 	for (size_t i = 0; i < 10; ++i) {
