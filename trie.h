@@ -23,6 +23,7 @@ namespace data {
 	private:
 		trie<T>** children;
 		bool termination;
+		size_t count; // self and children
 		#ifdef PARA
 		static void* pthreadHas(void*);
 		struct pthreadParam {
@@ -33,11 +34,11 @@ namespace data {
 
 	public:
 		trie(); // O(sizeof(T))
-		void put(const T); // O(sizeof(T))
-		void remove(const T); // O(sizeof(T))
+		bool put(const T); // O(sizeof(T))
+		bool remove(const T); // O(sizeof(T))
 		bool has(const T) const; // O(sizeof(T))
 		bool hasAll(T*, size_t size) const; // O(sizeof(T) E) ^ O(sizeof(T))
-		size_t count();
+		size_t size();
 		class iterator {
 		private:
 			bool forwards;
@@ -88,16 +89,23 @@ namespace data {
 		root = NULL;
 		current = 0;
 	}
-	template<typename T> void trie<T>::remove(const T t) {
+	template<typename T> bool trie<T>::remove(const T t) {
 		if(t == 0) {
+			bool change = termination;
+			--count;
 			termination = false;
+			return change;
 		}
 		else {
 			T remains = t >> 4;
 			char first = t & 15;
 			if (children[first] != NULL) {
-				children[first]->remove(remains);
+				size_t before = children[first]->count;
+				bool change = children[first]->remove(remains);
+				count -= before - children[first]->count;
+				return change;
 			}
+			return false;
 		}
 	}
 	template<typename T> bool trie<T>::has(const T t) const {
@@ -148,9 +156,10 @@ namespace data {
 		#endif
 		return true;
 	}
-	template<typename T> void trie<T>::put(const T t) {
+	template<typename T> bool trie<T>::put(const T t) {
 		if(t == 0) {
-			termination = true;
+			count++;
+			return termination = true;
 		}
 		else {
 			T remains = t >> 4;
@@ -158,11 +167,15 @@ namespace data {
 			if (children[first] == NULL) {
 				children[first] = new trie<T>;
 			}
-			children[first]->put(remains);
+			size_t before = children[first]->count;
+			bool change = children[first]->put(remains);
+			count += children[first]->count - before;
+			return change;
 		}
 	}
 	template<typename T> trie<T>::trie() {
 		size_t max = 16;
+		count = 0;
 		this->children = new trie<T>*[max];
 		for (size_t i = 0; i < max; ++i) {
 			this->children[i] = NULL;
@@ -173,15 +186,17 @@ namespace data {
 	using std::string;
 	template <> trie<string>::trie() {
 		size_t max = 1 << 8*sizeof(char);
+		count = 0;
 		this->children = new trie<string>*[max];
 		for (size_t i = 0; i < max; ++i) {
 			this->children[i] = NULL;
 		}
 		this->termination = false;
 	}
-	template <> void trie<string>::put(const string str) {
+	template <> bool trie<string>::put(const string str) {
 		if(str.size() == 0) {
-			termination = true;
+			++count;
+			return termination = true;
 		}
 		else {
 			string remains = str.substr(1);
@@ -189,7 +204,10 @@ namespace data {
 			if (children[first] == NULL) {
 				children[first] = new trie<string>;
 			}
-			children[first]->put(remains);
+			size_t before = children[first]->count;
+			bool change = children[first]->put(remains);
+			count += children[first]->count - before;
+			return change;
 		}
 	}
 	template <> bool trie<string>::has(const string str) const {
@@ -205,17 +223,28 @@ namespace data {
 			return children[first]->has(remains);
 		}
 	}
-	template <> void trie<string>::remove(const string str) {
+	template <> bool trie<string>::remove(const string str) {
 		if(str.size() == 0) {
+			bool change = termination;
+			--count;
 			termination = false;
+			return change;
 		}
 		else {
 			string remains = str.substr(1);
 			char first = str[0];
 			if (children[first] != NULL) {
-				children[first]->remove(remains);
+				size_t before = children[first]->count;
+				bool change = children[first]->remove(remains);
+				count -= before - children[first]->count;
+				return change;
 			}
+			return false;
 		}
+	}
+
+	template <typename T> size_t trie<T>::size() {
+		return count;
 	}
 }
 
