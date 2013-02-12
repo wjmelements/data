@@ -140,12 +140,8 @@ int main() {
 	lett.put('b');
 	test("trie<char> does not hasAll things it doesn't have", lett.hasAll(theLetters,3), false);
 	test("trie<char> hasAll things it does have", lett.hasAll(theLetters,2), true);
-<<<<<<< HEAD
 	test("trie<char> counts its elements correctly", lett.size(), (size_t) 2);
-	cout << "\n\n== Splay Set ==\n";
-=======
 	section("Splay Set");
->>>>>>> 27fad518b595c6b3a054e7a07b98de18738bf6f0
 	splayset<unsigned int> digits;
 	test("Constructed with size zero", digits.size(), (size_t) 0);
 	for (unsigned int i = 0; i < 10; ++i) {
