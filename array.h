@@ -12,6 +12,7 @@ namespace data {
 		array(); // O(1)
 		array(size_t initialBuffer); // O(n)
 		array(const T* start, size_t count); // O(n)
+		~array();
 		T& operator[](const int index); // O(1)
 		T get(const int index); // O(1)
 		void push_back(const T& elem); // amoritized O(1)
@@ -24,14 +25,16 @@ namespace data {
 	};
 
 	template <typename T> void array<T>::tripleSize() {
-		prebuffer = postbuffer = (prebuffer + postbuffer + size);
-		T* remake = new T[3*prebuffer];
-		remake += prebuffer;
+		postbuffer = (prebuffer + postbuffer + size);
+		T* remake = new T[3*postbuffer];
+		remake += postbuffer;
 		// copy the old material into the new storage
 		for(size_t i = 0; i < size; ++i) {
 			remake[i] = data[i];
 		}
-		delete[]data; // might still be a memory leak
+		data -= prebuffer; // excluding this line causes a segmentation fault
+		delete[]data;
+		prebuffer = postbuffer;
 		data = remake;
 	}
 
@@ -47,6 +50,11 @@ namespace data {
 		prebuffer = postbuffer = initialBuffer;
 		data = new T[prebuffer << 2];
 		data += prebuffer;
+	}
+
+	template <typename T> array<T>::~array() {
+		data-=prebuffer;
+		delete[] data;
 	}
 
 	template <typename T> array<T>::array(const T* start, size_t count) {
@@ -79,6 +87,7 @@ namespace data {
 			tripleSize();
 		}
 		*(--data) = elem;
+		size++;
 		prebuffer--;
 	}
 
