@@ -5,6 +5,7 @@
 #include "avl.h"
 #include "util.h"
 #include "beap.h"
+#include "array.h"
 #include <cstddef>
 #include <iostream>
 using std::cout;
@@ -22,6 +23,7 @@ using data::mergesort;
 using data::heapsort;
 using data::priorityq;
 using data::randomData;
+using data::array;
 
 template<typename T> void test(string description, T value, T expected) {
 	cout << description << ":\t" << (value == expected ? "Pass" : "Fail") << endl;
@@ -188,130 +190,94 @@ int main() {
 	test("Does not contain removed values",smtest,true);
 	section("Bogoweb");
 	bogoweb<unsigned int> twoDigitNumbers;
-	cout << "Insert 100 elements:\t";
 	for (unsigned int i = 0; i < 100; ++i) {
 		twoDigitNumbers.insert(i);
 	}
-	cout << "Pass";
-	cout << "\nContains all of those elements:\t";
 	bool bwctest = true;
 	for (unsigned int i = 0; i < 100; ++i) {
 		if (!twoDigitNumbers.contains(i)) {
-			cout << i << endl;
 			bwctest = false;
 		}
 	}
-	if (bwctest) {
-		cout << "Pass";
-	}
-	else {
-		cout << "Fail";
-	}
-	cout << "\nDoes not contain other elements:\t";
+	test("Contains all of those elements",bwctest,true);
 	bwctest = true;
 	for (unsigned int i = 100; i < 200; ++i) {
 		if (twoDigitNumbers.contains(i)) {
-			cout << i << endl;
 			bwctest = false;
 		}
 	}
-	if (bwctest) {
-		cout << "Pass";
-	}
-	else {
-		cout << "Fail";
-	}
+	test("Does not contain other elements",bwctest,true);
 	section("AVL Set");
 	avlset<char> hexChars;
 	for (char letter = 'A'; letter <= 'F'; ++letter) {
 		hexChars.add(letter);
 	}
 	bool avlstest = true;
-	cout << "Adds 6 values and contains them:\t";
 	for (char letter = 'A'; letter <= 'F'; ++letter) {
 		if(!hexChars.contains(letter)) {
-			cout << letter;
 			avlstest = false;
 		}
 	}
-	if (avlstest) {
-		cout << "Pass";
-	}
-	else {
-		cout << "Fail";
-	}
-	bool test = true;
+	test("Adds 6 values and contains them",avlstest,true);
+	avlstest= true;
 	for (char letter = 'A'; letter <= 'F'; ++letter) {
 		hexChars.remove(letter);
 		if (hexChars.contains(letter)) {
-			cout << letter;
-			test = false;
+			avlstest = false;
 		}
 	}
-	cout << "\nRemoves them and no longer contains them:\t";
-	if (test) {
-		cout << "Pass";
-	}
-	else {
-		cout << "Fail";
-	}
+	test("Removes them and no longer contains them",avlstest,true);
 	section("AVL Map");
 	avlmap<char,unsigned int> offsetMap;
 	for (char i = 0; i < 16; ++i) {
 		offsetMap.put(i,(unsigned int)i + 48);
 	}
-	test = true;
+	bool avlmtest = true;
 	for (char i = 0; i < 16; ++i) {
 		if (offsetMap.get(i) != (unsigned int) i + 48) {
-			test = false;
+			avlmtest = false;
 		}
 	}
 	cout << "Contains all 16 values inserted:\t";
-	if (test) {
+	if (avlmtest) {
 		cout << "Pass";
 	}
 	else {
 		cout << "Fail";
 	}
 	section("Beap");
-	test = true;
+	bool btest = true;
 	beap<size_t> bigNums;
 	for (size_t i = 100; i > 88; --i) {
 		bigNums.insert(i);
 	}
-	cout << "Insert 12 values out of order and then count 12:\t";
-	if (bigNums.size() == 12) {
-		cout << "Pass";
-	}
-	else {
-		cout << "Fail";
-	}
-	cout << "\nThey pop in order:\t";
+	test("Insert 12 values out of order and then count 12",bigNums.size(),(size_t)12);
 	for (size_t i = 89; i < 101; ++i) {
 		if (bigNums.pop() != i) {
-			test = false;
-			cout << i;
+			btest = false;
 		}
 	}
-	if (test) {
-		cout << "Pass";
-	}
-	else {
-		cout << "Fail";
-	}
+	test("They pop in order",btest,true);
 	section("Priority Queue");
-	test = true;
 	priorityq<size_t,char> ruins;
-	cout << "Insert 26 values in random order and count 26:\t";
 	for (char i = 'A'; i <= 'Z'; ++i) {
 		ruins.insert(randomData<size_t>(),i);
 	}
-	if (ruins.size() == 26) {
-		cout << "Pass";
-	}
-	else {
-		cout << "Fail";
-	}
+	test("Insert 26 values in random order and count 26",ruins.size(),(size_t)26);
+	section("Array");
+	array<int> list(1);
+	test("Array constructed with no values",list.count(),(size_t) 0);
+	list.push_back(1);
+	test("Array has value after push_back",list[0],1);
+	list.push_front(2);
+	test("Array has value after push_front",list[0],2);
+	test("Array retains value after push_front",list[1],1);
+	test("Array now contains 2 values",list.count(),(size_t) 2);
+	list.push_front(3);
+	list.push_back(4);
+	list.push_front(5);
+	list.push_front(8);
+	test("Pushes 4 more elements and has them", list[0] + list[1] + list[2] + list[3] + list[4] + list[5], 23);
 	section("Util");
 	int* array = new int[10];
 	for (size_t i = 0; i < 10; ++i) {
@@ -319,7 +285,7 @@ int main() {
 	}
 	cout << "Mergesort:\t";
 	mergesort(array,10);
-	test = true;
+	bool test = true;
 	for (size_t i = 0; i < 10; ++i) {
 		if (array[i] != i) {
 			cout << i;
