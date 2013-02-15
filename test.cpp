@@ -278,6 +278,9 @@ int main() {
 	list.push_front(5);
 	list.push_front(8);
 	test("Pushes 4 more elements and has them", list[0] + list[1] + list[2] + list[3] + list[4] + list[5], 23);
+	test("Array has 6 values", list.count(), (size_t) 6);
+	list.clear();
+	list.compact();
 	section("Util");
 	int* array = new int[10];
 	for (size_t i = 0; i < 10; ++i) {

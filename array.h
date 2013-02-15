@@ -22,6 +22,8 @@ namespace data {
 		void insert(const int index, const T& elem); // O(n)
 		size_t count(); // O(1)
 		void reverse(); // O(1)
+		void compact(); // O(n)
+		void clear(); // O(1)
 	};
 
 	template <typename T> void array<T>::tripleSize() {
@@ -110,7 +112,28 @@ namespace data {
 		return size;
 	}
 
-	template <typename T> void reverse() {
+	template <typename T> void array<T>::reverse() {
 		//
 	}
+
+	template <typename T> void array<T>::compact() {
+		T* remake = new T[size];
+		for (size_t i = 0; i < size; ++i) {
+			remake[i] = data[i];
+		}
+		data -= prebuffer;
+		delete[] data;
+		data = remake;
+		prebuffer = postbuffer = 0;
+	}
+
+	template <typename T> void array<T>::clear() {
+		size_t adjustment = size >> 1;
+		prebuffer += adjustment;
+		data += adjustment;
+		postbuffer += adjustment;
+		postbuffer += size & 1;
+		size = 0;
+	}
+
 }
