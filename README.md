@@ -37,6 +37,10 @@ priorityq -- Beta
 
 array -- Alpha
 
+hashset
+
+hashmap
+
 rbset
 
 rbmap
