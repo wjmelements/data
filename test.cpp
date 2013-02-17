@@ -279,6 +279,13 @@ int main() {
 	list.push_front(8);
 	test("Pushes 4 more elements and has them", list[0] + list[1] + list[2] + list[3] + list[4] + list[5], 23);
 	test("Array has 6 values", list.count(), (size_t) 6);
+	list.insert(0,9);
+	test("Inserted element in correct position", list[0], 9);
+	test("Inserting element retains other elements", list[0] + list[1] + list[2] + list[3] + list[4] + list[5] + list[6], 32);
+	list.insert(7, 7);
+	test("Inserted element into different position", list[7], 7);
+	test("Inserting element retains other elements", list[0] + list[1] + list[2] + list[3] + list[4] + list[5] + list[6] + list[7], 39);
+	test("Array now contains 8 values", list.count(), (size_t) 8);
 	list.clear();
 	list.compact();
 	section("Util");

@@ -35,7 +35,7 @@ beap -- Beta
 
 priorityq -- Beta
 
-array -- Alpha
+array -- Beta
 
 hashset
 

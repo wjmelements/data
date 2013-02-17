@@ -21,9 +21,8 @@ namespace data {
 		void push_front(const T& elem); // amoritized O(1)
 		T pop_back(); // O(1)
 		T pop_front(); // O(1)
-		void insert(const int index, const T& elem); // O(n)
+		void insert(const size_t index, const T& elem); // O(n)
 		size_t count(); // O(1)
-		void reverse(); // O(1)
 		void compact(); // O(n)
 		void clear(); // O(1)
 	};
@@ -57,7 +56,7 @@ namespace data {
 	}
 
 	template <typename T> array<T>::~array() {
-		data-=prebuffer;
+		data -= prebuffer;
 		delete[] data;
 	}
 
@@ -106,16 +105,34 @@ namespace data {
 		return *(data++);
 	}
 
-	template <typename T> void array<T>::insert(const int index, const T& elem) {
-		//
+	template <typename T> void array<T>::insert(const size_t index, const T& elem) {
+		if (index > size >> 1) {
+			if (postbuffer == 0) {
+				tripleSize();
+			}
+			postbuffer--;
+			size++;
+			for (int i = size; i > index; --i) {
+				data[i] = data[i - 1];
+			} // make way
+			data[index] = elem;
+		} // forwards
+		else {
+			if (prebuffer == 0) {
+				tripleSize();
+			}
+			prebuffer--;
+			size++;
+			data--;
+			for (int i = 0; i < index; ++i) {
+				data[i] = data[i + 1];
+			}
+			data[index] = elem;
+		} // backwards
 	}
 
 	template <typename T> size_t array<T>::count() {
 		return size;
-	}
-
-	template <typename T> void array<T>::reverse() {
-		//
 	}
 
 	template <typename T> void array<T>::compact() {
