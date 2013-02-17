@@ -1,3 +1,5 @@
+#ifndef array_w
+#define array_w
 namespace data {
 
 	template <typename T> class array {
@@ -137,3 +139,4 @@ namespace data {
 	}
 
 }
+#endif
