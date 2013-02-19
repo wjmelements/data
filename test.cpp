@@ -112,6 +112,7 @@ int main() {
 	testArray("Linked list reverses correctly", alphabet, alphatest, size);
 	alpha.clear();
 	test("Clearing linked list makes size 0", alpha.size(), (size_t) 0);
+
 	section("Trie");
 	trie<string> dict;
 	test("String trie returns true in new value put",dict.put("hello world"),true);
@@ -143,6 +144,7 @@ int main() {
 	test("trie<char> does not hasAll things it doesn't have", lett.hasAll(theLetters,3), false);
 	test("trie<char> hasAll things it does have", lett.hasAll(theLetters,2), true);
 	test("trie<char> counts its elements correctly", lett.size(), (size_t) 2);
+
 	section("Splay Set");
 	splayset<unsigned int> digits;
 	test("Constructed with size zero", digits.size(), (size_t) 0);
@@ -165,6 +167,7 @@ int main() {
 		}
 	}
 	test("Does not contain values after removing them", sstest, true);
+
 	section("Splay Map");
 	splaymap<unsigned char,unsigned int> charstodigits;
 	test("Constructed with size zero", charstodigits.size(),(size_t)0);
@@ -188,6 +191,7 @@ int main() {
 		}
 	}
 	test("Does not contain removed values",smtest,true);
+
 	section("Bogoweb");
 	bogoweb<unsigned int> twoDigitNumbers;
 	for (unsigned int i = 0; i < 100; ++i) {
@@ -207,6 +211,8 @@ int main() {
 		}
 	}
 	test("Does not contain other elements",bwctest,true);
+	test("Contains the right number of elements",twoDigitNumbers.size(),(size_t) 100);
+
 	section("AVL Set");
 	avlset<char> hexChars;
 	for (char letter = 'A'; letter <= 'F'; ++letter) {
@@ -227,6 +233,7 @@ int main() {
 		}
 	}
 	test("Removes them and no longer contains them",avlstest,true);
+
 	section("AVL Map");
 	avlmap<char,unsigned int> offsetMap;
 	for (char i = 0; i < 16; ++i) {
@@ -245,6 +252,7 @@ int main() {
 	else {
 		cout << "Fail";
 	}
+
 	section("Beap");
 	bool btest = true;
 	beap<size_t> bigNums;
@@ -258,12 +266,14 @@ int main() {
 		}
 	}
 	test("They pop in order",btest,true);
+
 	section("Priority Queue");
 	priorityq<size_t,char> ruins;
 	for (char i = 'A'; i <= 'Z'; ++i) {
 		ruins.insert(randomData<size_t>(),i);
 	}
 	test("Insert 26 values in random order and count 26",ruins.size(),(size_t)26);
+
 	section("Array");
 	array<int> list(1);
 	test("Array constructed with no values",list.count(),(size_t) 0);
@@ -288,6 +298,7 @@ int main() {
 	test("Array now contains 8 values", list.count(), (size_t) 8);
 	list.clear();
 	list.compact();
+
 	section("Util");
 	int* array = new int[10];
 	for (size_t i = 0; i < 10; ++i) {

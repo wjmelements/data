@@ -25,6 +25,7 @@ namespace data {
 		bogoweb(T elem);
 		void insert(T elem); // unbounded
 		bool contains(T elem); // unbounded
+		size_t size(); // unbounded
 	};
 
 	template <typename T> bogoweb<T>::bogoweb() {
@@ -148,6 +149,54 @@ namespace data {
 			}
 		} while (!toVisit.empty());
 		return false;
+	}
+
+	template <typename T> size_t bogoweb<T>::size() {
+		if (root == NULL) {
+			return 0;
+		}
+		// it makes sense to use splay sets here because it will keep local values closer
+		splayset<bogonode<T>*> toVisit;
+		splayset<bogonode<T>*> visited;
+		bogonode<T>* current = root;
+		do {
+			if (current->left != NULL) {
+				if (!visited.contains(current->left)) {
+					toVisit.add(current->left);
+				}
+			}
+			if (current->right != NULL) {
+				if (!visited.contains(current->right)) {
+					toVisit.add(current->right);
+				}
+			}
+			if (current->up != NULL) {
+				if (!visited.contains(current->up)) {
+					toVisit.add(current->up);
+				}
+			}
+			visited.add(current);
+			toVisit.remove(current);
+			switch (rand() % 3) {
+			case 0: // up
+				if (current->up != NULL) {
+					current = current->up;
+				}
+			break;
+			case 1: // left
+				if (current->left != NULL) {
+					current = current->left;
+				}
+			break;
+			case 2: // right
+				if (current->right != NULL) {
+					current = current->right;
+				}
+			break;
+			}
+		} while (!toVisit.empty());
+		return visited.size();
+
 	}
 }
 #endif
