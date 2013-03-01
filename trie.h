@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <string>
+#include "array.h"
 
 #ifdef PARA
 #include <pthread.h>
@@ -34,28 +35,30 @@ namespace data {
 
 	public:
 		trie(); // O(sizeof(T))
+		~trie();
 		bool put(const T); // O(sizeof(T))
 		bool remove(const T); // O(sizeof(T))
 		bool has(const T) const; // O(sizeof(T))
-		bool hasAll(T*, size_t size) const; // O(sizeof(T) E) ^ O(sizeof(T))
+		bool hasAll(T*, size_t size) const; // O(sizeof(T) E) ; O(sizeof(T))
 		size_t size();
 		class iterator {
 		private:
-			bool forwards;
-			trie<T>* root;
-			T current;
+			bool forwards; // O(1)
+			T current; // path O(sizeof(T))
+			array<trie<T>*> stack; // O(sizeof(T))
 		public:
 			iterator();
 			iterator(bool forwards, trie<T>* root, T current);
+			iterator(bool forwards, trie<T>* root);
 			iterator(const iterator &original);
 			iterator& operator= (const iterator &original);
 			bool operator== (const iterator &other);
 			bool operator!= (const iterator &other);
 			T operator*();
-			iterator& operator++();
-			iterator& operator--();
-			iterator operator++(int);
-			iterator operator--(int);
+			T operator++();
+			T operator--();
+			T operator++(int);
+			T operator--(int);
 		};
 		// iterators make read-only bidirectional traversals
 		iterator inorder();
@@ -68,26 +71,67 @@ namespace data {
 
 	template <typename T> typename trie<T>::iterator& trie<T>::iterator::operator= (const iterator &original) {
 		forwards = original.forwards;
-		root = original.root;
+		stack = original.stack;
 		current = original.current;
 		return *this;
 	}
 
 	template<typename T> trie<T>::iterator::iterator(const iterator &original) {
 		forwards = original.forwards;
-		root = original.root;
+		stack = original.stack;
 		current = original.current;
 	}
 
 	template<typename T> trie<T>::iterator::iterator(bool forwards, trie<T>* root, T current) {
 		this->forwards = forwards;
-		this->root = root;
+		this->stack;
+		stack.push_back(root);
 		this->current = current;
 	}
-	template<typename T> trie<T>::iterator::iterator() {
+	template<typename T> trie<T>::iterator::iterator(bool forwards, trie<T>* root) {
 		forwards = true;
-		root = NULL;
+		stack;
+		stack.push_back(root);
 		current = 0;
+	}
+	template<typename T> bool trie<T>::iterator::operator==(const iterator& other) {
+		return current == other.current && stack[0] == other.stack[0];
+	}
+	template<typename T> bool trie<T>::iterator::operator!=(const iterator& other) {
+		return current != other.current || stack[0] != other.stack[0];
+	}
+	template<typename T> T trie<T>::iterator::operator++() {
+		// certainly fails in the zero case
+		while(!stack.empty()) {
+			trie<T>* loc = stack.pop();
+			size_t depth = stack.count();
+			size_t i = current >> (depth << 2);
+			for(++i; i <= 0xF; ++i) {
+				if(loc->children[i]) {
+					stack.push(loc->children[i]);
+					//current = 
+					if (loc->children[i]->termination) {
+						return *this;
+					}
+					break;
+				}
+			}
+		}
+		// DNF
+	}
+	template<typename T> T trie<T>::iterator::operator--() {
+		return *this;
+	}
+	template<typename T> T trie<T>::iterator::operator++(int) {
+		iterator last = *this;
+		return last;
+	}
+	template<typename T> T trie<T>::iterator::operator--(int) {
+		iterator last = *this;
+		return last;
+	}
+	template<typename T> T trie<T>::iterator::operator*() {
+		return current;
 	}
 	template<typename T> bool trie<T>::remove(const T t) {
 		if(t == 0) {
@@ -135,7 +179,7 @@ namespace data {
 		for (size_t i = 0; i < count; ++i) {
 			params[i].root = this;
 			params[i].elem = &elements[i];
-			pthread_create(&threadIDs[i],NULL,(void* (*) (void*))&(this->pthreadHas),&params[i]);
+			pthread_create(&threadIDs[i],NULL,(void* (*) (void*)) &(this->pthreadHas),&params[i]);
 		}
 		for (size_t i = 0; i < count; ++i) {
 			pthread_join(threadIDs[i],(void**)&res);
@@ -182,8 +226,23 @@ namespace data {
 		}
 		this->termination = false;
 	}
-	
+	template<typename T> trie<T>::~trie() {
+		size_t max = 16;
+		for (size_t i = 0; i < max; ++i) {
+			if (this->children[i]) {
+				delete this->children[i];
+			}
+		}
+	}
 	using std::string;
+	template <> trie<string>::~trie() {
+		size_t max = 1 << 8*sizeof(char);
+		for (size_t i = 0; i < max; ++i) {
+			if (this->children[i]) {
+				delete this->children[i];
+			}
+		}
+	}
 	template <> trie<string>::trie() {
 		size_t max = 1 << 8*sizeof(char);
 		count = 0;
