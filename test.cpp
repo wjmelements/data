@@ -144,7 +144,11 @@ int main() {
 	test("trie<char> does not hasAll things it doesn't have", lett.hasAll(theLetters,3), false);
 	test("trie<char> hasAll things it does have", lett.hasAll(theLetters,2), true);
 	test("trie<char> counts its elements correctly", lett.size(), (size_t) 2);
-
+	/* Bug: signed values fail
+	trie<signed int> negatives;
+	negatives.put(-1);
+	test("trie<signed int> can contain negative numbers", negatives.has(-1), true);
+	*/
 	section("Splay Set");
 	splayset<unsigned int> digits;
 	test("Constructed with size zero", digits.size(), (size_t) 0);

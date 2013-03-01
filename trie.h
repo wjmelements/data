@@ -13,11 +13,11 @@ namespace data {
 	/*
 		supported types:
 		string
-		(un)signed long long
-		(un)signed long
-		(un)signed int
-		(un)signed short
-		(un)signed char
+		unsigned long long
+		unsigned long
+		unsigned int
+		unsigned short
+		unsigned char
 	*/
 	template <typename T>
 	class trie {
