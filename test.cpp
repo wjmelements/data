@@ -189,7 +189,7 @@ int main() {
 	smtest = true;
 	for (char i = '0'; i <= '9'; ++i) {
 		charstodigits.remove(i);
-		if (charstodigits.get(i) != NULL) {
+		if (charstodigits.get(i) != (size_t) NULL) {
 			smtest = false;
 			cout << i << ' ';
 		}

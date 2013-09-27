@@ -247,7 +247,7 @@ namespace data {
 		sanityCheck();
 		#endif
 		if (root == NULL) {
-			return NULL;
+			return (V) NULL;
 		}
 		tuple map;
 		map.key = key;

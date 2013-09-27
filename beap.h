@@ -96,7 +96,7 @@ namespace data {
 
 	template <typename T> T beap<T>::pop() {
 		if (count == 0) {
-			return NULL;
+			return (T) NULL;
 		}
 		size_t current = 1;
 		size_t left = 2;

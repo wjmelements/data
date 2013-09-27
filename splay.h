@@ -414,7 +414,7 @@ namespace data {
 		tuple pair;
 		pair.key = key;
 		if (root == NULL) {
-			return NULL;
+			return (V) NULL;
 		}
 		splaytreenode<tuple>* loc = root->find(pair);
 		if (loc) {
@@ -427,7 +427,7 @@ namespace data {
 			#endif
 			return loc->data.value;
 		}
-		return NULL;
+		return (V) NULL;
 		
 	}
 	#ifdef DEBUG
