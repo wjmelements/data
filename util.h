@@ -12,13 +12,15 @@ namespace data {
 	void rseed(size_t seed); // O(1)
 	template <typename T> T randomData(); // O(sizeof(T))
 	// Sorts
-	template <typename T> T* mergesort(T* start, size_t size); // O(n^2)
+	template <typename T> T* quicksort(T* start, size_t size); // O(n^2)
+	template <typename T> T* mergesort(T* start, size_t size); // O(n log n)
 	template <typename T> T* radixsort(T* start, size_t size); // O(sizeof(T) n)
 	template <typename T> T* triesort(T* start, size_t size); // O(sizeof(T) n)
 	template <typename T> T* heapsort(T* start, size_t size); // O(n log n)
 	// Shuffles
 	template <typename T> T* heapshuffle(T* start, size_t size); // O(n log n)
-	template <typename T> T* mergeshuffle(T* start, size_t size); // O(n^2)
+	template <typename T> T* mergeshuffle(T* start, size_t size); // O(n log n)
+	template <typename T> T* quickshuffle(T* start, size_t size); // O(n^2)
 
 	template <typename T> T max(T one, T two) {
 		return one > two ? one : two;
@@ -40,7 +42,7 @@ namespace data {
 	template <> bool randomData() {
 		return rand() & 1;
 	}
-	template <typename T> T* mergesort(T* start, size_t size) {
+	template <typename T> T* quicksort(T* start, size_t size) {
 		if (size < 2) {
 			return start;
 		}
@@ -57,8 +59,8 @@ namespace data {
 				larger[large++] = start[i];
 			}
 		}
-		smaller = mergesort(smaller,small);
-		larger = mergesort(larger,large);
+		smaller = quicksort(smaller,small);
+		larger = quicksort(larger,large);
 		// merge
 		size_t index = 0;
 		while (index < small) {

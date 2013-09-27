@@ -19,7 +19,7 @@ using data::bogoweb;
 using data::avlset;
 using data::avlmap;
 using data::beap;
-using data::mergesort;
+using data::quicksort;
 using data::heapsort;
 using data::priorityq;
 using data::randomData;
@@ -309,7 +309,7 @@ int main() {
 		array[i] = 9 - i;
 	}
 	cout << "Mergesort:\t";
-	mergesort(array,10);
+	quicksort(array,10);
 	bool test = true;
 	for (size_t i = 0; i < 10; ++i) {
 		if (array[i] != i) {
