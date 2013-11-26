@@ -11,6 +11,7 @@ namespace data {
 	template <typename T> T min(T one, T two); // O(1)
 	void rseed(size_t seed); // O(1)
 	template <typename T> T randomData(); // O(sizeof(T))
+    template <typename K, typename V> V** map(K** input, size_t nmemb, V* (*func)(K*));
 	// Sorts
 	template <typename T> T* quicksort(T* start, size_t size); // O(n^2)
 	template <typename T> T* mergesort(T* start, size_t size); // O(n log n)
@@ -42,6 +43,54 @@ namespace data {
 	template <> bool randomData() {
 		return rand() & 1;
 	}
+
+    #define map_do_divides 1
+    template <typename K, typename V> struct map_do_param {
+        K** input;
+        V** output;
+        V* (*func)(K*);
+        size_t interval;
+        size_t remaining; // inclusive
+    };
+    template <typename K, typename V> void* map_do(void* arg) {
+        struct map_do_param<K,V>* param = (struct map_do_param<K,V>*) arg;
+        size_t i;
+        pthread_t kids[map_do_divides];
+        for (i = 0; i < map_do_divides; i++) {
+            size_t offset = (i + 1) * param->interval;
+            if (offset < param->remaining) {
+                struct map_do_param<K,V>* spawn = (struct map_do_param<K,V>*) malloc(sizeof(map_do_param<K,V>));
+                spawn->input = param->input + offset;
+                spawn->output = param->output + offset;
+                spawn->func = param->func;
+                spawn->interval = param->interval * map_do_divides;
+                spawn->remaining = param->remaining - offset;
+                pthread_create(&(kids[i]), NULL, map_do<K,V>, spawn);
+            } else {
+                break;
+            }
+        }
+        *param->output = param->func(*param->input);
+        free(param);
+        for (size_t j = 0; j < i; j++) {
+            pthread_join(kids[j], NULL);
+        }
+        return EXIT_SUCCESS;
+    }
+    template <typename K, typename V> V** map(K** input, size_t nmemb, V* (*func)(K*)) {
+        V** ret = (V**) malloc(sizeof(V*) * nmemb);
+        struct map_do_param<K,V>* param = (struct map_do_param<K,V>*) malloc(sizeof(map_do_param<K,V>));
+        param->input = input;
+        param->output = ret;
+        param->func = func;
+        param->interval = 1;
+        param->remaining = nmemb;
+        if (nmemb) {
+            map_do<K,V>(param);
+        }
+        return ret;
+    }
+
 	template <typename T> T* quicksort(T* start, size_t size) {
 		if (size < 2) {
 			return start;

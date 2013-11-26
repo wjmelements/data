@@ -24,7 +24,7 @@ using data::heapsort;
 using data::priorityq;
 using data::randomData;
 using data::array;
-
+using data::map;
 template<typename T> void test(string description, T value, T expected) {
 	cout << description << ":\t" << (value == expected ? "Pass" : "Fail") << endl;
 }
@@ -341,6 +341,33 @@ int main() {
 	else {
 		cout << "Fail";
 	}
+    cout << "\nMap:\t";
+    test = true;
+    int** input = (int**) calloc(100,sizeof(int*));
+    for (size_t i = 0; i < 100; i++) {
+        input[i] = (int*) malloc(sizeof(int));
+        *(input[i]) = (int) i;
+    }
+    int** output = map<int,int>(input, 100, [](int* in) {
+        int* ret = (int*) malloc(sizeof(int));
+        *ret = *in * 2;
+        return ret;
+    });
+    for (size_t i = 0; i < 100; i++) {
+        if (*output[i] != i * 2) {
+            test = false;
+        }
+        free(output[i]);
+        free(input[i]);
+    }
+    free(input);
+    free(output);
+    if (test) {
+        cout << "Pass";
+    }
+    else {
+        cout << "Fail";
+    }
 	cout << "\nRandomness:";
 	cout << "\n\tRandom ints:";
 	for (size_t i = 0; i < 5; ++i) {
