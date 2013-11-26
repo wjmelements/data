@@ -1,9 +1,9 @@
 CC=g++
-CFLAGS=-O3
+CFLAGS=-O3 -pthread -std=c++11
 all:
 	$(CC) $(CFLAGS) test.cpp -o test
 para:
-	$(CC) $(CFLAGS) -D PARA test.cpp -pthread -fpermissive -o test
+	$(CC) $(CFLAGS) -D PARA test.cpp -o test
 debug:
 	$(CC) -D DEBUG -Wall test.cpp -o test
 clean:

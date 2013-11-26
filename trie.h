@@ -28,7 +28,7 @@ namespace data {
 		#ifdef PARA
 		static void* pthreadHas(void*);
 		struct pthreadParam {
-			trie<T>* root;
+			const trie<T>* root;
 			T* elem;
 		};
 		#endif
@@ -167,7 +167,7 @@ namespace data {
 	}
 	#ifdef PARA
 	template<typename T> void* trie<T>::pthreadHas(void* data) {
-		pthreadParam* param = data;
+		pthreadParam* param = (pthreadParam*) data;
 		return (void*) param->root->has(*(param->elem));
 	}
 	#endif
