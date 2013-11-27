@@ -5,9 +5,13 @@ all:
 para:
 	$(CC) $(CFLAGS) -D PARA test.cpp -o test
 debug:
-	$(CC) -D DEBUG -Wall test.cpp -o test
+	$(CC) -D DEBUG -g -Wall test.cpp -o test
+gdb:
+	$(CC) $(CFLAGS) -g test.cpp -o test
+	gdb test
 clean:
 	rm test
 	git gc
 run:
 	./test
+check: all run para run
